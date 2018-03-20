@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <fstream>
 #include "Wallet.cpp"
 #include "Transaction.cpp"
@@ -27,14 +28,16 @@ int main()
       cin >> fiatMoney;
       //std::getline (std::cin,fiatMoney,c);
 
-       std::string name;
-       std::getline (std::cin,name);
+       //std::string name;
+       //std::getline (std::cin,name);
+       char name[256];
+       cin >> name;
 
       //create object wallet
       //and save in the files
 
-
-      std::cout << endl << fiatMoney << " " << name << endl;
+      Wallet w = createWallet(name, fiatMoney);
+      printWallet(w);
 
 
   }
