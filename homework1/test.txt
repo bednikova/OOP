@@ -1,0 +1,2 @@
+1. Kak se chete i zapisva v dvoichen fail
+2. Random generator na int???

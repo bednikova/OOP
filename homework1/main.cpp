@@ -36,8 +36,15 @@ int main()
       //create object wallet
       //and save in the files
 
-      Wallet w = createWallet(name, fiatMoney);
+      Wallet w(name, fiatMoney);
       printWallet(w);
+
+      writeBinary(w);
+      std::cout << endl;
+
+      readBinary();
+
+
 
 
   }
