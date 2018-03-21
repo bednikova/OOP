@@ -7,12 +7,13 @@ using namespace std;
 
 
 
-
-Wallet createWallet(char* name, double money, unsigned id)
+//create wallet -> helper function for read of binary files
+Wallet createWallet(char* name, double money, int idd)  //char* id)//unsigned id)
 {
       Wallet w;
       strcpy(w.owner,name);
-      w.id = id;   // problem ;d
+      w.id = idd;   // problem ;d
+      //strcpy(w.id, id);
       w.fiatMoney = money;
 
 
@@ -20,6 +21,11 @@ Wallet createWallet(char* name, double money, unsigned id)
 }
 
 
+
+
+
+//print wallet ->
+//id: .. name: .. money: ..
 void printWallet(Wallet w)
 {
     std::cout << "\nId: " << w.id << "\tName: " << w.owner << "\tMoney: " << w.fiatMoney << endl;
@@ -31,6 +37,7 @@ void printWallet(Wallet w)
 
 
 //Emo
+//write one object
 void writeBinary(const Wallet &w)
 {
     ofstream myfile("wallet.dat", ios::binary|ios::app);  //open
@@ -54,6 +61,7 @@ void writeBinary(const Wallet &w)
 
 
 //Emo
+//read first row
 void readBinary()
 {
     Wallet w;
@@ -65,9 +73,12 @@ void readBinary()
         myfile.read((char*)&len, sizeof(len));
         char* buff = new char[len+1];
         myfile.read(buff, len);
-        unsigned id;
-        double fiatMoney;
+        int id;
+        //unsigned id;
+        //char* id;
         myfile.read((char*)&id, sizeof(id));
+        double fiatMoney;
+        //myfile.read((char*)&id, sizeof(id));
         myfile.read((char*)&fiatMoney, sizeof(fiatMoney));
 
         w = createWallet(buff, fiatMoney, id);
@@ -82,6 +93,92 @@ void readBinary()
     printWallet(w);
 
     myfile.close();
+}
+
+
+//info
+Wallet infoInReadBinary()
+{
+    Wallet w;
+    ifstream myfile("wallet.dat", ios::binary);  //open
+
+    if(myfile)
+    {
+        int len;
+        myfile.read((char*)&len, sizeof(len));
+        char* buff = new char[len+1];
+        myfile.read(buff, len);
+        int id;
+        //unsigned id;
+        //char* id;
+        myfile.read((char*)&id, sizeof(id));
+        double fiatMoney;
+        //myfile.read((char*)&id, sizeof(id));
+        myfile.read((char*)&fiatMoney, sizeof(fiatMoney));
+
+        w = createWallet(buff, fiatMoney, id);
+
+        delete [] buff;
+    }
+    else
+    {
+        cout << "Error \n";
+    }
+
+    //printWallet(w);
+
+    myfile.close();
+
+    return w;
+}
+
+
+//read file
+void readBinaryFile()
+{
+    //Wallet w;
+    ifstream myfile("wallet.dat", ios::binary);  //open
+
+    do  // for( ; myfile; )
+    {
+
+
+        Wallet w;
+        if(myfile)
+        {
+            int len;
+            myfile.read((char*)&len, sizeof(len));
+            char* buff = new char[len+1];
+            myfile.read(buff, len);
+            //unsigned id;
+            int id;
+            double fiatMoney;
+            myfile.read((char*)&id, sizeof(id));
+            myfile.read((char*)&fiatMoney, sizeof(fiatMoney));
+
+            //..
+            /*
+            int len1;
+            myfile.read((char*)&len1, sizeof(len1));
+            char* id = new char[len1+1];
+            myfile.read(id, len1);
+            */
+
+            w = createWallet(buff, fiatMoney, id);
+
+            delete [] buff;
+        }
+        else
+        {
+            cout << "Error \n";
+        }
+
+        if(myfile)   //not read -> end files
+            printWallet(w);
+    }while(myfile);
+
+    myfile.close();
+
 }
 
 

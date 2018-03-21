@@ -1,26 +1,44 @@
 #include <iostream>
 #include <string.h>
+#include "idGen.cpp"
 
 
 using namespace std;
 
 struct Wallet {
     char owner[256];
-    unsigned id;
+    int id;
+    //unsigned id;
+    //char* id;
     double fiatMoney;
-    static int idd;
+    //static int idd;
     Wallet()
     {
          strcpy(owner,"");
          fiatMoney = 0.0;
          //id = 0;
+         //id = returnId()-1;
     }
+/*
+    char* getUniqueIdentifier()
+    {
+        static int counter = 0;
+        char* id;
+        sprintf(id, "%d", counter++);
+        return id;
+    }
+*/
+
     Wallet(char* name, double money)
     {
          strcpy(owner,name);
          fiatMoney = money;
-         id = ++idd;
+         id = returnId();
+         saveId(id);
+
+         //id = getUniqueIdentifier();   // ++idd;
     }
+
 };
 
-int Wallet::idd = 0;
+//int Wallet::idd = ++idd;
