@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "Transaction.h"
-#pragma once
+//#pragma once
 
 using namespace std;
 
@@ -45,21 +45,24 @@ void printTransaction(Transaction &t)
 //write one object
 void writeBinaryFileTransactions(const Transaction &t)
 {
-    ofstream myfile("transaction.dat", ios::binary|ios::app);
-    if(myfile)
-    {
-        myfile.write((char*)&t.time, sizeof(t.time));
-        myfile.write((char*)&t.senderId, sizeof(t.senderId));
-        myfile.write((char*)&t.receiverId, sizeof(t.receiverId));
-        myfile.write((char*)&t.fmiCoins, sizeof(t.fmiCoins));
-    }
-    else
-    {
-        cout << "Error \n";
-    }
+
+            ofstream myfile("transaction.dat", ios::binary|ios::app);
+            if(myfile)
+            {
+                myfile.write((char*)&t.time, sizeof(t.time));
+                myfile.write((char*)&t.senderId, sizeof(t.senderId));
+                myfile.write((char*)&t.receiverId, sizeof(t.receiverId));
+                myfile.write((char*)&t.fmiCoins, sizeof(t.fmiCoins));
+            }
+            else
+            {
+                cout << "Error \n";
+            }
+            myfile.close();
 
 
-    myfile.close();
+
+
 }
 
 
@@ -103,34 +106,41 @@ void readBinaryFileTransaction()
 
 void searchTransaction(unsigned idd)
 {
-    ifstream myfile("transaction.dat", ios::binary);
 
-    do
+    if(validWaller(idd))
     {
-        Transaction t;
-        if(myfile)
-        {
-            long long time;
-            unsigned senderId;
-            unsigned receiverId;
-            double fmiCoins;
-            myfile.read((char*)&time, sizeof(time));
-            myfile.read((char*)&senderId, sizeof(senderId));
-            myfile.read((char*)&receiverId, sizeof(receiverId));
-            myfile.read((char*)&fmiCoins, sizeof(fmiCoins));
+            ifstream myfile("transaction.dat", ios::binary);
 
-            t = createTransaction1(senderId, receiverId, fmiCoins, time);
-        }
-        else
-        {
-            cout << "Error \n";
-        }
+            do
+            {
+                Transaction t;
+                if(myfile)
+                {
+                    long long time;
+                    unsigned senderId;
+                    unsigned receiverId;
+                    double fmiCoins;
+                    myfile.read((char*)&time, sizeof(time));
+                    myfile.read((char*)&senderId, sizeof(senderId));
+                    myfile.read((char*)&receiverId, sizeof(receiverId));
+                    myfile.read((char*)&fmiCoins, sizeof(fmiCoins));
 
-        if(myfile && (t.receiverId == idd || t.senderId == idd))
-            printTransaction(t);
-    }while(myfile);
+                    t = createTransaction1(senderId, receiverId, fmiCoins, time);
+                }
+                else
+                {
+                    cout << "Error \n";
+                }
 
-    myfile.close();
+                if(myfile && (t.receiverId == idd || t.senderId == idd))
+                    printTransaction(t);
+            }while(myfile);
+
+            myfile.close();
+    }
+    else
+        cout << "Error is not valid id! \n";
+
 }
 
 

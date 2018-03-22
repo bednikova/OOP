@@ -34,23 +34,27 @@ void printOrder(Order &o)
 //write one object
 void writeBinaryFileOrders(const Order &o)
 {
-    ofstream myfile("order.dat", ios::binary|ios::app);  //open
-
-    if(myfile)
+    if(validWaller(o.walletId))
     {
-        int len = strlen(o.type)+1;
-        myfile.write((char*)&len, sizeof(len));
-        myfile.write(o.type, len);
-        myfile.write((char*)&o.walletId, sizeof(o.walletId));
-        myfile.write((char*)&o.fmiCoins, sizeof(o.fmiCoins));
+        ofstream myfile("order.dat", ios::binary|ios::app);  //open
+
+        if(myfile)
+        {
+            int len = strlen(o.type)+1;
+            myfile.write((char*)&len, sizeof(len));
+            myfile.write(o.type, len);
+            myfile.write((char*)&o.walletId, sizeof(o.walletId));
+            myfile.write((char*)&o.fmiCoins, sizeof(o.fmiCoins));
+        }
+        else
+        {
+            cout << "Error \n";
+        }
+        myfile.close();
     }
     else
-    {
-        cout << "Error \n";
-    }
+        cout << "Sorry id is not valid! \n";
 
-
-    myfile.close();
 }
 
 

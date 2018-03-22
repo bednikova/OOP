@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string.h>
 #include "Wallet.h"
-#include "Transaction.cpp"
+//#include "Transaction.cpp"
 
 using namespace std;
 
@@ -196,6 +196,49 @@ void searchWaller(unsigned idd)
         }
         if(!myfile)
             cout << "Sorry id is not valid! \n";
+    }while(myfile);
+
+    myfile.close();
+}
+
+
+//valid id
+//function valid waller id
+bool validWaller(unsigned idd)
+{
+    ifstream myfile("wallet.dat", ios::binary);  //open
+
+    do
+    {
+        Wallet w;
+        if(myfile)
+        {
+            int len;
+            myfile.read((char*)&len, sizeof(len));
+            char* buff = new char[len+1];
+            myfile.read(buff, len);
+            unsigned id;
+            double fiatMoney;
+            myfile.read((char*)&id, sizeof(id));
+            myfile.read((char*)&fiatMoney, sizeof(fiatMoney));
+
+            w = createWallet(buff, fiatMoney, id);
+
+            delete [] buff;
+        }
+        else
+        {
+            cout << "Error \n";
+        }
+
+        if(myfile && w.id == idd)   //not read -> end files
+        {
+                myfile.close();
+                return true;
+        }
+        if(!myfile)
+            //cout << "Sorry id is not valid! \n";
+            return false;
     }while(myfile);
 
     myfile.close();

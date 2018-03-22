@@ -1,9 +1,6 @@
 #include <iostream>
 #include <time.h>
 
-
-using namespace std;
-
 struct Transaction {
     long long time;
     unsigned senderId;

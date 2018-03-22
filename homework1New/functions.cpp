@@ -4,6 +4,7 @@
 #include <fstream>
 #include "Wallet.cpp"
 #include "Order.cpp"
+#include "Transaction.cpp"
 //#include <cstdlib>
 #pragma once
 
