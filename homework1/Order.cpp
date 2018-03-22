@@ -5,12 +5,14 @@
 using namespace std;
 
 
-Order createOrder(int id, double m)
+Order createOrder(char* t,int id, double m)
 {
     Order o;
     //o.Type = t;
-    o.fmiCoins = m;
+    strcpy(o.type,t);
     o.walletId = id;
+    o.fmiCoins = m;
+
 
 
     return o;
@@ -20,7 +22,7 @@ Order createOrder(int id, double m)
 
 void printOrder(Order &o)
 {
-    cout //<< "Type: " << o.Type
+    cout << "Type: " << o.type
          << "\tId: " << o.walletId
          << "\tfmiCoins: " << o.fmiCoins << endl;
 }
@@ -33,9 +35,9 @@ void writeBinaryFileOrders(const Order &o)
 
     if(myfile)
     {
-        //int len = strlen(w.owner)+1;
-        //myfile.write((char*)&len, sizeof(len));
-        //myfile.write(w.owner, len);
+        int len = strlen(o.type)+1;
+        myfile.write((char*)&len, sizeof(len));
+        myfile.write(o.type, len);
         //myfile.write((char*)&o.Type, sizeof(o.Type));
         myfile.write((char*)&o.walletId, sizeof(o.walletId));
         //myfile.write((char*)&t.receiverId, sizeof(t.receiverId));
@@ -63,18 +65,23 @@ void readBinaryFileOrder()
         Order o;
         if(myfile)
         {
+            int len;
+            myfile.read((char*)&len, sizeof(len));
+            char* buff = new char[len+1];
+            myfile.read(buff, len);
 
             int id;
-            //Type t;
+
             double fmiCoins;
-            //myfile.read((char*)&t, sizeof(t));
+
             myfile.read((char*)&id, sizeof(id));
-            //myfile.read((char*)&receiverId, sizeof(receiverId));
+
             myfile.read((char*)&fmiCoins, sizeof(fmiCoins));
 
 
+            o = createOrder(buff,id, fmiCoins);
 
-            o = createOrder(id, fmiCoins);
+            delete [] buff;
 
 
         }

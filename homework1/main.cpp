@@ -68,13 +68,11 @@ int main()
       else if(comand == "make-order")
       {
             //info
-            std::string type;
-            std::getline (std::cin, type, c);
+            //std::string type;
+            //std::getline (std::cin, type, c);
+            char type[6];
+            cin >> type;
 
-            double fmiCoins;
-            cin >> fmiCoins;
-            //std::string fmiCoins;
-            //std::getline (std::cin, fmiCoins, c);
 
             //unsigned walletId;
             int walletId;
@@ -82,9 +80,14 @@ int main()
             //std::string walletId;
             //std::getline (std::cin, walletId);
 
+            double fmiCoins;
+            cin >> fmiCoins;
+            //std::string fmiCoins;
+            //std::getline (std::cin, fmiCoins, c);
+
 
             //....
-            Order o = createOrder(walletId, fmiCoins);
+            Order o = createOrder(type,walletId, fmiCoins);
             writeBinaryFileOrders(o);
             readBinaryFileOrder();
 
