@@ -3,8 +3,8 @@
 #include <string.h>
 #include <fstream>
 #include "Wallet.cpp"
-//#include "Transaction.cpp"
 #include "Order.cpp"
+#include <cstdlib>
 #pragma once
 
 using namespace std;
@@ -12,7 +12,6 @@ using namespace std;
 
 int main()
 {
-
     do{
         char c = ' ';  //delim
         std::string comand;
@@ -85,6 +84,9 @@ int main()
 
 
             //....
+            Order o = createOrder(walletId, fmiCoins);
+            writeBinaryFileOrders(o);
+            readBinaryFileOrder();
 
 
       }

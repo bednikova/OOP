@@ -9,7 +9,7 @@ using namespace std;
 Transaction createTransaction(Wallet &w, int s = 4294967295)
 {
     Transaction t;
-    //t.time = time();
+    t.time = time(NULL);
     t.fmiCoins = w.fiatMoney/375;
     t.senderId = s;
     t.receiverId = w.id;
@@ -19,10 +19,10 @@ Transaction createTransaction(Wallet &w, int s = 4294967295)
 }
 
 
-Transaction createTransaction1(int s, int r, double fmi)
+Transaction createTransaction1(int s, int r, double fmi,long long time)
 {
     Transaction t;
-    //t.time = time();
+    t.time = time;
     t.fmiCoins = fmi;
     t.senderId = s;
     t.receiverId = r;
@@ -33,8 +33,8 @@ Transaction createTransaction1(int s, int r, double fmi)
 
 void printTransaction(Transaction &t)
 {
-    cout //<< "Time: " << t.time
-         << "senderId: " << t.senderId
+    cout << "Time: " << t.time
+         << "\tSenderId: " << t.senderId
          << "\tReceiverId: " << t.receiverId
          << "\tfmiCoins: " << t.fmiCoins << endl;
 }
@@ -50,6 +50,7 @@ void writeBinaryFileTransactions(const Transaction &t)
         //int len = strlen(w.owner)+1;
         //myfile.write((char*)&len, sizeof(len));
         //myfile.write(w.owner, len);
+        myfile.write((char*)&t.time, sizeof(t.time));
         myfile.write((char*)&t.senderId, sizeof(t.senderId));
         myfile.write((char*)&t.receiverId, sizeof(t.receiverId));
         myfile.write((char*)&t.fmiCoins, sizeof(t.fmiCoins));
@@ -78,16 +79,18 @@ void readBinaryFileTransaction()
         Transaction t;
         if(myfile)
         {
+            long long time;
             int senderId;
             int receiverId;
             double fmiCoins;
+            myfile.read((char*)&time, sizeof(time));
             myfile.read((char*)&senderId, sizeof(senderId));
             myfile.read((char*)&receiverId, sizeof(receiverId));
             myfile.read((char*)&fmiCoins, sizeof(fmiCoins));
 
 
 
-            t = createTransaction1(senderId, receiverId, fmiCoins);
+            t = createTransaction1(senderId, receiverId, fmiCoins,time);
 
 
         }
@@ -117,16 +120,18 @@ void searchTransaction(int idd)
         Transaction t;
         if(myfile)
         {
+            long long time;
             int senderId;
             int receiverId;
             double fmiCoins;
+            myfile.read((char*)&time, sizeof(time));
             myfile.read((char*)&senderId, sizeof(senderId));
             myfile.read((char*)&receiverId, sizeof(receiverId));
             myfile.read((char*)&fmiCoins, sizeof(fmiCoins));
 
 
 
-            t = createTransaction1(senderId, receiverId, fmiCoins);
+            t = createTransaction1(senderId, receiverId, fmiCoins, time);
 
 
         }

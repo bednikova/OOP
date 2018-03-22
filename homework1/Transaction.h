@@ -16,7 +16,7 @@ struct Transaction {
     //construct
     Transaction()
     {
-        //time = time();
+        time = 0;//time(NULL);
         senderId = 4294967295;
         receiverId = 0;
         fmiCoins = 0.0;
