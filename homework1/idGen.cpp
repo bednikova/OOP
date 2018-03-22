@@ -21,6 +21,7 @@ int returnId()
       {
 
           myfile >> id;
+          return ++id;
           //cout << ++id << '\n';
 
 
@@ -29,8 +30,8 @@ int returnId()
       else cout << "Unable to open file";
   }
 
-  id = ++id;
-  return id;
+  //id = ++id;
+  //return id;
 }
 
 void saveId(int id)

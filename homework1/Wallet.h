@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string.h>
 #include "idGen.cpp"
+//#include "Transaction.cpp"
 
 
 using namespace std;
@@ -35,8 +36,12 @@ struct Wallet {
          fiatMoney = money;
          id = returnId();
          saveId(id);
+         //Transaction t;
+    }
 
-         //id = getUniqueIdentifier();   // ++idd;
+    int getID() const
+    {
+        return id;
     }
 
 };

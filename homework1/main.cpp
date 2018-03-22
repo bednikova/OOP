@@ -2,11 +2,10 @@
 #include <string>
 #include <string.h>
 #include <fstream>
-//#include "infoWalletID.cpp"
 #include "Wallet.cpp"
-#include "Transaction.cpp"
+//#include "Transaction.cpp"
 #include "Order.cpp"
-//#pragma once
+#pragma once
 
 using namespace std;
 
@@ -42,8 +41,13 @@ int main()
           //print wallet w
           //printWallet(w);
 
+          Transaction t = createTransaction(w);
+          printTransaction(t);
+          writeBinaryFileTransactions(t);
+          readBinaryFileTransaction();
+
           writeBinary(w);
-          std::cout << endl;
+          //std::cout << endl;
 
           //read last wallet
           //readBinary();
@@ -54,6 +58,8 @@ int main()
           readBinaryFile();
 
           std::cout << endl;
+
+
 
 
 
@@ -71,7 +77,8 @@ int main()
             //std::string fmiCoins;
             //std::getline (std::cin, fmiCoins, c);
 
-            unsigned walletId;
+            //unsigned walletId;
+            int walletId;
             cin >> walletId;
             //std::string walletId;
             //std::getline (std::cin, walletId);
@@ -90,7 +97,8 @@ int main()
 
           //function
           //-> info  for  walletId
-         // searchWaller(walletId);
+         searchWaller(walletId);
+         searchTransaction(walletId);
       }
       else if(comand == "attract-investors")
       {
@@ -112,7 +120,7 @@ int main()
       }
       else
       {
-          std::cout << " : ( ";
+          //std::cout << " : ( ";
       }
 
     }while(true);

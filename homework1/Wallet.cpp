@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string.h>
 #include "Wallet.h"
+#include "Transaction.cpp"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ Wallet createWallet(char* name, double money, int idd)  //char* id)//unsigned id
 //id: .. name: .. money: ..
 void printWallet(Wallet w)
 {
-    std::cout << "\nId: " << w.id << "\tName: " << w.owner << "\tMoney: " << w.fiatMoney << endl;
+    std::cout << "Id: " << w.id << "\tName: " << w.owner << "\tMoney: " << w.fiatMoney << "\n";
 }
 
 
@@ -182,4 +183,49 @@ void readBinaryFile()
 }
 
 
+//probrem function
+void searchWaller(int idd)
+{
+    //Wallet w;
+    ifstream myfile("wallet.dat", ios::binary);  //open
 
+    do  // for( ; myfile; )
+    {
+
+
+        Wallet w;
+        if(myfile)
+        {
+            int len;
+            myfile.read((char*)&len, sizeof(len));
+            char* buff = new char[len+1];
+            myfile.read(buff, len);
+            //unsigned id;
+            int id;
+            double fiatMoney;
+            myfile.read((char*)&id, sizeof(id));
+            myfile.read((char*)&fiatMoney, sizeof(fiatMoney));
+
+
+
+            w = createWallet(buff, fiatMoney, id);
+
+            delete [] buff;
+        }
+        else
+        {
+            cout << "Error \n";
+        }
+
+        if(myfile && w.id == idd)   //not read -> end files
+        {
+                printWallet(w);
+                myfile.close();
+                return;
+        }
+        if(!myfile)
+            cout << "Sorry id is not valid! \n";
+    }while(myfile);
+
+    myfile.close();
+}
