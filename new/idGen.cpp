@@ -6,7 +6,6 @@ using namespace std;
 
 unsigned returnId()
 {
-  //int id = 0;
   unsigned id;
   ifstream myf("wallet.dat",ios::binary);
   if(!myf)

@@ -329,7 +329,7 @@ void addWallet()
           writeBinaryFileTransactions(t);
 
           //test
-          readBinaryFileTransaction();
+          //readBinaryFileTransaction();
 
           writeBinary(w);
           //std::cout << endl;
@@ -339,7 +339,7 @@ void addWallet()
 
           //test
           //read binary file
-          readBinaryFile();
+          //readBinaryFile();
 
 
           //zapisva vyv fail obshtata inf
@@ -374,7 +374,7 @@ void makeOrder()
             writeBinaryFileOrders(o);
 
             //test
-            readBinaryFileOrder();
+            //readBinaryFileOrder();
 }
 
 
