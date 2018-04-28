@@ -1,0 +1,34 @@
+# depslib dependency file v1.0
+1524083008 source:c:\users\bednikova\desktop\44892-homework2\texteditor\fileeditor.cpp
+	<iostream>
+	"FileEditor.h"
+
+1524079790 c:\users\bednikova\desktop\44892-homework2\texteditor\fileeditor.h
+	"FileManager.h"
+
+1524079937 c:\users\bednikova\desktop\44892-homework2\texteditor\filemanager.h
+
+1524083420 source:c:\users\bednikova\desktop\44892-homework2\texteditor\main.cpp
+	<iostream>
+	"FileManager.h"
+	"FileEditor.h"
+	<string.h>
+
+1524083562 source:c:\users\bednikova\desktop\44892-homework2\texteditor\filemanager.cpp
+	<iostream>
+	<string.h>
+	<fstream>
+	"FileManager.h"
+
+1524080953 c:\users\bednikova\desktop\44892-homework2\texteditor\functionhelp.cpp
+	<iostream>
+	"FileManager.h"
+	"FileEditor.h"
+	<string.h>
+
+1524080953 source:c:\users\bednikova\desktop\44892-homework2\texteditor\functionhelp.cpp
+	<iostream>
+	"FileManager.h"
+	"FileEditor.h"
+	<string.h>
+
