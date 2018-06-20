@@ -1,0 +1,542 @@
+#include <iostream>
+#include <fstream>
+#include <math.h>
+//#include "Polinom.h"
+
+using namespace std;
+
+template <typename Type>
+inline Type* reverse(Type* array, int size)
+{
+    Type* newArray = new Type[size];
+    for(int index = 0; index < size; ++index)
+    {
+        newArray[index] = array[size-index-1];
+    }
+
+    return newArray;
+}
+
+
+template <typename Type>
+inline Polinom<Type>::Polinom() : coef(NULL), deg(-1), size(0)
+{
+
+}
+
+template <typename Type>
+inline Polinom<Type>::Polinom(Type* _coef, int _deg)
+{
+    //exeptions
+    int _size = _deg + 1;
+    coef = new Type[_size];
+    for(int i = 0; i < _size; ++i)
+    {
+        coef[i] = _coef[i];
+    }
+    deg = _deg;
+    size = _size;
+
+}
+
+template <typename Type>
+inline Polinom<Type>::~Polinom()
+{
+    deleteHelp();
+}
+
+template <typename Type>
+inline Polinom<Type>::Polinom(const Polinom<Type>& p)
+{
+    copyHelp(p);
+}
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::operator=(const Polinom<Type>& p)
+{
+    if(this != &p)
+    {
+        deleteHelp();
+        copyHelp(p);
+    }
+
+    return *this;
+}
+
+
+template <typename Type>
+inline Type Polinom<Type>::getElem(int index) const
+{
+    if (index >= 0 && index <= size - 1)
+    {
+        return coef[index];
+    }
+    return 0;
+}
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::operator+=(const Polinom<Type>& p)
+{
+    coef = reverse<Type>(coef, size);
+    if (p.size > this->size)
+    {
+        Type* temp = new Type[p.size];
+        for(int index = 0; index < p.size; ++index)
+        {
+            temp[index] = this->getElem(index);
+        }
+
+        deleteHelp();
+        this->size = p.size;
+        this->deg = p.deg;
+        this->coef = temp;
+
+    }
+
+    for(int index = 0; index < p.size; ++index)
+    {
+        coef[index] += reverse<Type>(p.coef, p.size)[index];
+    }
+
+    coef = reverse<Type>(coef, size);
+    return *this;
+}
+
+
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::operator-=(const Polinom<Type>& p)
+{
+    coef = reverse<Type>(coef, size);
+    if (p.size > this->size)
+    {
+        Type* temp = new Type[p.size];
+        for(int index = 0; index < p.size; ++index)
+        {
+            temp[index] = this->getElem(index);
+        }
+
+        deleteHelp();
+        this->size = p.size;
+        this->deg = p.deg;
+        this->coef = temp;
+
+    }
+
+    for(int index = 0; index < p.size; ++index)
+    {
+        coef[index] -= reverse<Type>(p.coef, p.size)[index];
+    }
+
+    coef = reverse<Type>(coef, size);
+    return *this;
+}
+
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::operator*=(const Polinom<Type>& p)
+{
+        Type* temp = new Type[p.size+size];
+
+
+        for(int index = 0; index < p.size+size; ++index)
+        {
+            temp[index] = 0;
+        }
+
+        Polinom result(temp, p.deg+deg);
+
+        for(int index = 0; index < size; ++index)
+        {
+            for(int index_ = 0; index_ < p.size; ++index_)
+            {
+                result.coef[index+index_] += coef[index]*p.coef[index_];
+            }
+        }
+
+        deleteHelp();
+        *this = result;
+        return *this;
+
+}
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::operator/=(const Polinom<Type>& p)
+{
+    Type* result = new Type[size - p.size];
+    for(int index = 0; index < (size - p.size); ++index)
+    {
+        result[index] = 0;
+    }
+
+
+    Polinom resultPolinom(result, deg-p.deg);  //ch.
+    Polinom polinom(result, deg); //pomoshten
+    Polinom helperNew(result,deg-1);  //ostatyk
+    Polinom pol = p;
+    int index = 0;
+    int degree = deg - p.deg;
+    while(degree - index >= 0)
+    {
+        resultPolinom.coef[index] = coef[index]/p.getElem(index);
+        polinom = pol*(coef[index]/p.getElem(index));
+        helperNew = *this - polinom;
+        deleteHelp();
+        *this = helperNew;
+        ++index;
+
+    }
+    deleteHelp();
+    *this = resultPolinom;
+
+    return *this;
+}
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::operator%=(const Polinom<Type>& p)
+{
+    Type* result = new Type[size - p.size];
+    for(int index = 0; index < (size - p.size); ++index)
+    {
+        result[index] = 0;
+    }
+
+
+    Polinom resultPolinom(result, deg-p.deg);  //ch.
+    Polinom polinom(result, deg); //pomoshten
+    Polinom helperNew(result,deg-1);  //ostatyk
+    Polinom pol = p;
+    int index = 0;
+    int degree = deg - p.deg;
+    while(degree - index >= 0)
+    {
+        resultPolinom.coef[index] = (double)this->getElem(index)/p.getElem(index);
+        polinom = pol*(this->getElem(index)/p.getElem(index));
+        //*this -= polinom;
+        helperNew = *this - polinom;
+        *this = helperNew;
+        ++index;
+
+    }
+    return *this;
+}
+
+
+template <typename Type>
+inline Polinom<Type> Polinom<Type>::operator+(const Polinom<Type>& p)
+{
+
+    Polinom z(*this);
+    z += p;
+    return z;
+}
+
+
+template <typename Type>
+inline Polinom<Type> Polinom<Type>::operator-(const Polinom<Type>& p)
+{
+    Polinom z(*this);
+    z -= p;
+    return z;
+}
+
+
+template <typename Type>
+inline Polinom<Type> Polinom<Type>::operator*(const Polinom<Type>& p)
+{
+    Polinom z(*this);
+    z *= p;
+    return z;
+}
+
+
+template <typename Type>
+inline Polinom<Type> Polinom<Type>::operator/(const Polinom<Type>& p)
+{
+    Polinom z(*this);
+    z /= p;
+    return z;
+}
+
+
+template <typename Type>
+inline Polinom<Type> Polinom<Type>::operator%(const Polinom<Type>& p)
+{
+    Polinom z(*this);
+    z %= p;
+    return z;
+}
+
+template <typename Type>
+inline bool Polinom<Type>::operator==(const Polinom<Type>& p)
+{
+    if(size != p.size)
+    {
+        return false;
+    }
+
+    for(int index = 0; index < size; ++index)
+    {
+        if(coef[index] != p.coef[index])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+template <typename Type>
+inline bool Polinom<Type>::operator!=(const Polinom<Type>& p)
+{
+    return !(*this == p);
+}
+
+template <typename Type>
+inline bool Polinom<Type>::operator<(const Polinom<Type>& p)
+{
+    if ((*this == p) || (size > p.size))
+    {
+        return false;
+    }
+
+    if(size < p.size)
+    {
+        return true;
+    }
+    else
+    {
+        for(int index = 0; index < size; ++index)
+        {
+            if(coef[index] > p.coef[index])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+template <typename Type>
+inline bool Polinom<Type>::operator>(const Polinom<Type>& p)
+{
+    return ((*this != p) && !(*this < p)) ? true : false;
+}
+
+template <typename Type>
+inline bool Polinom<Type>::operator>=(const Polinom<Type>& p)
+{
+    return (*this < p) ? false : true;
+}
+
+
+template <typename Type>
+inline bool Polinom<Type>::operator<=(const Polinom<Type>& p)
+{
+    return (*this > p) ? false : true;
+}
+
+template <typename Type>
+inline Polinom<Type> Polinom<Type>::operator*(Type number)
+{
+    Polinom<Type> p(coef,deg);
+
+    for(int index = 0; index < size; ++index)
+    {
+        p.coef[index] *= number;
+    }
+
+    return p;
+}
+
+template <typename Type>
+inline int Polinom<Type>::getSize() const
+{
+    return size;
+}
+
+
+template <typename Type>
+inline Polinom<Type> Polinom<Type>::operator/(Type number)
+{
+    Polinom<Type> p(coef,deg);
+
+    for(int index = 0; index < size; ++index)
+    {
+        p.coef[index] /= number;
+    }
+
+    return p;
+
+}
+
+template <typename Type>
+inline Type Polinom<Type>::operator()(Type x) const
+{
+    Type result = coef[0];
+
+    for(int index = 1; index < size; ++index)
+    {
+        result = result*x + coef[index];
+        //result += this->getElem(index)*pow(x,deg-index);
+    }
+
+    return result;
+}
+
+
+//integral v [a,b]
+template <typename Type>
+inline Type Polinom<Type>::operator()(Type a,Type b) const
+{
+
+    Type* _coef = new Type[size+1];
+
+    for(int index = 0; index < size+1; ++index)
+    {
+        _coef[index] = 0;
+    }
+
+    Polinom polinom(_coef, deg+1);
+
+    for(int index = 0; index < polinom.size-1; ++index)
+    {
+        polinom.coef[index] = this->getElem(index)/(polinom.deg-index);
+    }
+    polinom.coef[polinom.size-1] = 0;
+
+
+    Type resultFin = 0;
+    resultFin = polinom(b) - polinom(a);
+
+    return resultFin;
+
+}
+
+
+template <typename Type>
+inline Type& Polinom<Type>::operator[](int _deg)
+{
+    int index = size - _deg -1;
+    return coef[index];
+
+}
+
+
+//operator za cast
+template <typename Type>
+inline Polinom<Type>::operator int() const
+{
+    return deg;
+}
+
+template <typename Type>
+inline Polinom<Type>::operator bool() const
+{
+    return (size > 0) ? true : false;
+}
+
+template <typename Type>
+inline bool Polinom<Type>::operator!(void) const
+{
+     return (deg == 0) ? true : false;
+}
+
+template <typename Type>
+inline void Polinom<Type>::copyHelp(const Polinom<Type>& p)
+{
+    size = p.size;
+    deg = p.deg;
+    //exeptions
+    coef = new Type[size];
+    for(int index = 0; index < size; ++index)
+    {
+        coef[index] = p.coef[index];
+    }
+
+}
+
+
+template <typename Type>
+inline void Polinom<Type>::deleteHelp()
+{
+    delete [] coef;
+    coef = NULL;
+    size = 0;
+    deg = 0;
+}
+
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::operator++()
+{
+    this->integral();
+
+  return *this;
+}
+
+
+
+template <typename Type>
+inline Polinom<Type> Polinom<Type>::operator++(int)
+{
+    Polinom polinom(*this);
+    ++(*this);
+    return polinom;
+}
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::operator--()
+{
+    this->proizvodna();
+    return *this;
+}
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::integral()
+{
+    Polinom polinom(coef, deg);
+    deleteHelp();
+    this->coef = new Type[polinom.size+1];
+    this->deg = polinom.deg+1;
+    this->size = polinom.size+1;
+    for(int index = 0; index < size; ++index)
+    {
+        coef[index] = 0;
+    }
+    for(int index = 0; index < size - 1; ++index)
+    {
+        coef[index] = polinom.getElem(index)/(deg-index);
+    }
+    coef[size-1] = 0;
+
+
+    return *this;
+}
+
+template <typename Type>
+inline Polinom<Type>& Polinom<Type>::proizvodna()
+{
+    Polinom polinom;
+    polinom = *this;
+    delete [] coef;
+    this->coef = new Type[size-1];
+    this->size = size - 1;
+    this->deg = deg - 1;
+
+    for(int index = 0; index < this->size; ++index)
+    {
+        this->coef[index] = 0;
+    }
+    for(int index = 0; index < this->size-1; ++index)
+    {
+        this->coef[index] += polinom.coef[index]*(polinom.deg-index);
+    }
+    this->coef[size-1] += polinom.coef[size-1];
+
+    return *this;
+}
+
+
+//template class Polinom<int>;
+//template class Polinom<double>;
