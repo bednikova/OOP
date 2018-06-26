@@ -78,7 +78,7 @@ int countColumns(char* row)
 
 bool isInt(char* data)
 {
-    int len = strlen(data)+1;
+    int len = strlen(data);
 
 
     for(int index = 0; index < len; ++index)
@@ -107,7 +107,7 @@ bool isInt(char* data)
 
 bool isDouble(char* data)
 {
-    int len = strlen(data)+1;
+    int len = strlen(data);
 
 
     for(int index = 0; index < len; ++index)
@@ -149,7 +149,7 @@ bool isDouble(char* data)
 
 bool isString(char* data)
 {
-    int len = strlen(data)+1;
+    int len = strlen(data);
 
 
     for(int index = 0; index < len; ++index)
@@ -166,41 +166,56 @@ bool isString(char* data)
 
 bool isDate(char* data)
 {
-    int len = strlen(data)+1;
+    int len = strlen(data);
 
-
-    for(int index = 0; index < len; ++index)
-    {
-        if(isalpha(data[index]))
-        {
-            return false;
-        }
-    }
-
-    for(int index = 0; index < len; ++index)
-    {
-        if((data[index] == '\"') || (data[index] == ' ') || (data[index] == '-') || (data[index] == '+'))
-        {
-            return false;
-        }
-    }
-
-    int count = 0;
-    for(int index = 0; index < len; ++index)
-    {
-        if(data[index] == '.')
-        {
-            ++count;
-        }
-    }
-
-    if(count > 2)
+    if(isInt(data) || isDouble(data))
     {
         return false;
     }
 
-    //2+4+2+2
-    return (len == 11) ? true : false;
+    int count = 0;
+    int size1 = 0, size2 = 0, size3 = 0;
+    for(int index = 0; index < len; ++index)
+    {
+        if(!isdigit(data[index]))
+        {
+            if(data[index] != '.')
+            {
+                return false;
+            }
+        }
+
+        if(data[index] == '.')
+        {
+            ++count;
+        }
+        if((count == 0) && (data[index] != '.') && (isdigit(data[index])))
+        {
+            ++size1;
+        }
+        if((count == 1) && (data[index] != '.') && (isdigit(data[index])))
+        {
+            ++size2;
+        }
+        if((count == 2) && (data[index] != '.') && (isdigit(data[index])))
+        {
+            ++size3;
+        }
+
+        if(count > 2)
+        {
+            return false;
+        }
+    }
+
+    if(((size1 == 2) && (size2 == 2) && (size3 = 4)) || ((size1 == 4) && (size2 == 2) && (size3 = 2)))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 int castStringToInt(char* data)

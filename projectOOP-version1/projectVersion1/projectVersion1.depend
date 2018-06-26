@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1530031766 source:c:\users\bednikova\desktop\projectoop-version1\readfromfile.cpp
+1530044555 source:c:\users\bednikova\desktop\projectoop-version1\readfromfile.cpp
 	<iostream>
 	<fstream>
 	<string.h>
@@ -42,7 +42,7 @@
 	"Type.h"
 	<iostream>
 
-1530023019 source:c:\users\bednikova\desktop\projectoop-version1\main.cpp
+1530044644 source:c:\users\bednikova\desktop\projectoop-version1\main.cpp
 	<iostream>
 	"ReadFromFile.h"
 
@@ -51,7 +51,7 @@
 	<fstream>
 	<string.h>
 
-1530022960 c:\users\bednikova\desktop\projectoop-version1\readfromfile.h
+1530032735 c:\users\bednikova\desktop\projectoop-version1\readfromfile.h
 
 1529661459 source:c:\users\bednikova\desktop\projectoop-version1\typedate.cpp
 

@@ -15,7 +15,7 @@ int main()
     */
     char proba[30];
     cin >> proba;
-/*
+///*
     //??type
     cout << (isInt(proba) ? "Yes\n" : "No\n");
     int result = castStringToInt(proba);
@@ -25,9 +25,14 @@ int main()
     cout << result1 << " " << result1+1 << endl;
     cout << (isDate(proba) ? "Yes\n" : "No\n");
 
-*/
+//*/
 
 
+    cout << (isDate(proba) ? "Yes\n" : "No\n");
+
+/*
+
+    //razdelqne na kletki
     char** array = rowsMember(proba);
 
 
@@ -35,6 +40,6 @@ int main()
     {
         cout << array[id] << " ";
     }
-
+*/
     return 0;
 }
