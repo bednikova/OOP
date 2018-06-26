@@ -98,8 +98,16 @@ bool isInt(char* data)
     }
 
 
-    if((data[0] == '-') || (data[0] == '+') || isdigit(data[0]) == '0-9')
+    if((data[0] == '-') || (data[0] == '+') || isdigit(data[0]))
     {
+        for(int index = 1; index < len; ++index)
+        {
+            if(!isdigit(data[index]))
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 }
@@ -140,8 +148,16 @@ bool isDouble(char* data)
         return false;
     }
 
-    if((data[0] == '-') || (data[0] == '+') || isdigit(data[0]) == '0-9')
+    if((data[0] == '-') || (data[0] == '+') || isdigit(data[0]))
     {
+        for(int index = 1; index < len; ++index)
+        {
+            if(!isdigit(data[index]) && data[index] != '.')
+            {
+                return false;
+            }
+        }
+
         return true;
     }
 }
