@@ -226,3 +226,48 @@ double castStringToDouble(char* data)
 
     return number;
 }
+
+
+char** rowsMember(char* data)
+{
+    int len = strlen(data);
+    int countCol = countColumns(data);
+    char** array = new char*[countCol+1];
+    int start = 0;
+    int end = 0;
+    int count = 0;
+    int index = 0;
+    char* buff;
+
+        for(int i = 0; i < len; ++i)
+        {
+            start = i;
+            count = 0;
+            while((data[i] != ',') && i < len)
+            {
+                ++count;
+                ++i;
+            }
+            //cout << "i and count " << i << " " << count << endl;
+            end = i;
+            buff = new char[count+1];
+
+            for(int j = start, m = 0; j < end; ++m, ++j)
+            {
+                buff[m] = data[j];
+            }
+
+            buff[count] = '\0';
+            array[index] = buff;
+            ++index;
+            delete [] buff;
+        }
+/*
+        for(int id = 0; id < countCol+1; ++id)
+        {
+            cout << array[id] << " ";
+        }
+
+*/
+        return array;
+}

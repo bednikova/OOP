@@ -28,3 +28,7 @@ bool isString(char* data);
 int castStringToInt(char* data);
 //double
 double castStringToDouble(char* data);
+
+
+//razdelq na grupi, i vrysha masiv ot kletki
+char** rowsMember(char* data);
