@@ -11,7 +11,54 @@ using namespace std;
 class Type
 {
     public:
-        virtual ~Type() {}
+        Type() : data(NULL) {}
+        Type(char* _data)
+        {
+            data = new char[strlen(_data)+1];
+            strcpy(data, _data);
+        }
+        Type(const Type& s)
+        {
+            copy(s);
+        }
+        Type& operator=(const Type& t)
+        {
+            if(this != &t)
+            {
+                deleteHelp();
+                copy(t);
+            }
+
+            return *this;
+        }
+
+        virtual ~Type()
+        {
+            deleteHelp();
+        }
+
         virtual void print() const = 0;
+
+        const char* getData() const
+        {
+            return data;
+        }
+
+    protected:
+
+        char* data;
+
+        void deleteHelp()
+        {
+            delete [] data;
+        }
+
+        void copy(const Type& t)
+        {
+            data = new char[strlen(t.data)+1];
+            strcpy(data, t.data);
+
+        }
+
 };
 #endif

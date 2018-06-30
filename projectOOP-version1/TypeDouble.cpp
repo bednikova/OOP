@@ -1,6 +1,6 @@
 #include "TypeDouble.h"
 
-TypeDouble::TypeDouble(char* data)
+TypeDouble::TypeDouble(char* data) : Type(data)
 {
     value = m.castStringToDouble(data);
 }

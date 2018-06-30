@@ -33,7 +33,7 @@ int main(int argc, const char * argv[])
         }
         else if(strcmp("save", buffer) == 0)
         {
-            //tablica.saveDataFromFile(fileName);
+            tablica.saveDataFromFile("newFile.txt");
             cout << endl;
             cin.ignore();
         }
@@ -63,7 +63,7 @@ int main(int argc, const char * argv[])
             char content[1024];
             cin.getline(content, 1024);
 
-            //tablica.editCell(row, column, content);
+            tablica.editCell(row, column, content);
             cout << endl;
         }
         else if(strcmp("exit", buffer) == 0)

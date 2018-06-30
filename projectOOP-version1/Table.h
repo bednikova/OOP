@@ -19,6 +19,7 @@ class Table
 
         bool loadDataFromFile(char* fileName);
         void saveDataFromFile(char* fileName);
+        void editCell(int row, int column, char* content);
         void printTable() const;
 
     private:

@@ -121,7 +121,62 @@ void Table::saveDataFromFile(char* fileName)
 
     if (output)
     {
+        for ( int index = 0; index < rowCount; ++index)
+        {
+            int numCols = columnsSize[index];
+            //char content[1024] = "";
+            for (int colIndex = 0; colIndex < numCols; ++colIndex)
+            {
+                output <<  matrix[index][colIndex]->getData();
+                //strcpy(content,matrix[index][colIndex]);
+                if(colIndex < numCols-1)
+                {
+                    output << ", ";
+                    //strcpy(content,",");
 
+                }
+            }
+            //strcpy(content,"\n");
+            output << "\n";
+            //output << content;
+        }
     }
     output.close();
+}
+
+
+void Table::editCell(int row, int column, char* content)
+{
+    Manager m;
+
+    if(m.isInt(m.Trim(content)))
+    {
+        delete matrix[row-1][column-1];
+        matrix[row-1][column-1] = new TypeInt(m.Trim(content));
+    }
+    else if(m.isDouble(m.Trim(content)))
+    {
+        delete matrix[row-1][column-1];
+        matrix[row-1][column-1] = new TypeDouble(m.Trim(content));
+    }
+    else if(m.isDate(m.Trim(content)))
+    {
+        delete matrix[row-1][column-1];
+        matrix[row-1][column-1] = new TypeDate(m.Trim(content));
+    }
+    else if(m.isString(m.Trim(content)))
+    {
+        delete matrix[row-1][column-1];
+        matrix[row-1][column-1] = new TypeString(m.Trim(content));
+    }
+    else if(strlen(content) == 0 || strlen(content) == 1)
+    {
+        delete matrix[row-1][column-1];
+        matrix[row-1][column-1] = new TypeString();
+
+    }
+    else
+    {
+        cout << "Error: " << content << " is unknown data type\n";
+    }
 }

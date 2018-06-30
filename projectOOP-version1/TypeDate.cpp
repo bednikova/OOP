@@ -1,6 +1,6 @@
 #include "TypeDate.h"
 
-TypeDate::TypeDate(char* data)
+TypeDate::TypeDate(char* data) : Type(data)
 {
     day = m.dateMember(data, "day");
     month = m.dateMember(data, "month");

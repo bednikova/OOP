@@ -1,6 +1,6 @@
 #include "TypeInt.h"
 
-TypeInt::TypeInt(char* data)
+TypeInt::TypeInt(char* data) : Type(data)
 {
     value = m.castStringToInt(data);
 }

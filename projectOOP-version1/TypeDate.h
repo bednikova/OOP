@@ -6,12 +6,13 @@
 class TypeDate : public Type
 {
     public:
-        TypeDate() : day(1), month(1), year(1900) {}
+        TypeDate() : Type("01.01.1900"),day(1), month(1), year(1900) {}
         TypeDate(char* data);
         bool isValid(char* data);
         int getDay() const;
         int getMonth() const;
         int getYear() const;
+        //char* getValue() const;
         void setValue(char* data);
         void print() const;
     private:

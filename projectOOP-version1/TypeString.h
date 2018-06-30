@@ -5,7 +5,7 @@
 class TypeString : public Type
 {
     public:
-        TypeString() : value(0) {}
+        TypeString() : Type(" "),value(0) {}
         TypeString(char* data);
         TypeString(const TypeString&);
         ~TypeString();

@@ -1,11 +1,11 @@
 #include "TypeString.h"
 
-TypeString::TypeString(char* data) : value(NULL)
+TypeString::TypeString(char* data) : Type(data), value(NULL)
 {
     setValue(data);
 }
 
-TypeString::TypeString(const TypeString& s) : value(NULL)
+TypeString::TypeString(const TypeString& s) : Type(data), value(NULL)
 {
     copy(s);
 }
