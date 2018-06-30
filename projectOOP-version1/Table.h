@@ -21,12 +21,14 @@ class Table
         void saveDataFromFile(char* fileName);
         void editCell(int row, int column, char* content);
         void printTable() const;
+        void sort(int column);
 
     private:
 
         Type*** matrix;
         int* columnsSize;
         int rowCount;
+        int maxColumns;
 
 };
 

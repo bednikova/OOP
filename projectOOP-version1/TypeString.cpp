@@ -49,7 +49,23 @@ void TypeString::print() const
     {
         for(int index = 0; index < strlen(value)+1; ++index)
         {
-            if(value[index] != '\\')  // za C:\\temp\\ opravi go!!!
+            if(value[index] == '\"' && (index == 0 || index == strlen(value)-1))
+            {
+                //cout << '\"';
+            }
+            else if(value[index] == '\"' && !(index == 0 || index == strlen(value)-1))
+            {
+                cout << '"';
+            }
+            else if(value[index] == '\\' && value[index+1] != '\\')
+            {
+                //cout << '\\';
+            }
+            else if(value[index] == '\\' && value[index+1] == '\\')
+            {
+                cout << value[index];
+            }
+            else
             {
                 cout << value[index];
             }

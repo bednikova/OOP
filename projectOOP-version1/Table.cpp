@@ -27,6 +27,7 @@ bool Table::loadDataFromFile(char* fileName)
     if (input)
     {
         Manager m;
+        maxColumns = m.maxOfCountColumns(fileName)+1;
         int numRows = m.countRowsInFile(fileName);
         rowCount = numRows;
         matrix = new Type**[numRows];
@@ -40,7 +41,7 @@ bool Table::loadDataFromFile(char* fileName)
             input.getline(buff, 1024);
             int numOfColumns = m.countColumns(buff);
             columnsSize[index] = numOfColumns;
-            matrix[index] = new Type*[numOfColumns];
+            matrix[index] = new Type*[maxColumns];//new Type*[numOfColumns];
 
 
             char** rowAttributes = m.rowsMember(buff);
@@ -97,9 +98,16 @@ bool Table::loadDataFromFile(char* fileName)
                 }
             }
                 delete [] rowAttributes;
+
+
+            for (int colIndex = numOfColumns; colIndex < maxColumns; ++colIndex)
+            {
+                matrix[index][colIndex] = new TypeString();
             }
 
         }
+
+    }
 
     input.close();
 
@@ -110,7 +118,8 @@ void Table::printTable() const
 {
     for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
     {
-        int numCols = columnsSize[rowIndex];
+        //int numCols = columnsSize[rowIndex];
+        int numCols = maxColumns;
 
         for (int colIndex = 0; colIndex < numCols; ++colIndex)
         {
@@ -134,7 +143,8 @@ void Table::saveDataFromFile(char* fileName)
     {
         for ( int index = 0; index < rowCount; ++index)
         {
-            int numCols = columnsSize[index];
+            //int numCols = columnsSize[index];
+            int numCols = maxColumns;
 
             for (int colIndex = 0; colIndex < numCols; ++colIndex)
             {
@@ -161,6 +171,11 @@ void Table::editCell(int row, int column, char* content)
     Manager m;
 
     //proveri dali sa korektni redyt i kolonata!!!
+    if(row > rowCount || column > maxColumns)
+    {
+        cout << "Not valid row or column!!!\n";
+        return;
+    }
 
     if(m.isInt(m.Trim(content)))
     {
@@ -195,3 +210,20 @@ void Table::editCell(int row, int column, char* content)
 }
 
 
+void Table::sort(int column)
+{
+    /*
+    if(column > maxColumns)
+    {
+        cout << "Not valid column! \n";
+        return;
+    }
+
+    char** matrixHelp = new Type*[rowCount];
+    for(int indexRow = 0; indexRow < rowCount; ++index)
+    {
+        matrixHelp[indexRow] = new Type();
+        matrix[indexRow][column-1];
+    }
+    */
+}
