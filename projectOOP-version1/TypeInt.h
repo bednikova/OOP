@@ -1,3 +1,4 @@
+#include "Manager.h"
 #include "Type.h"
 #ifndef __TYPEINT_H__
 #define __TYPEINT_H__
@@ -5,19 +6,16 @@
 class TypeInt : public Type
 {
     public:
-
-        TypeInt();
+        TypeInt() : value(0)
+        {
+        }
         TypeInt(char* data);
-
-        bool IntValid(char* data);
-
+        bool isValid(char* data);
         int getValue() const;
-        void printData();
-
+        void setValue(char* data);
+        void print() const;
     private:
-
-         int value;
-
+        int value;
+        Manager m;
 };
-
 #endif

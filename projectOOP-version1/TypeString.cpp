@@ -1,32 +1,18 @@
 #include "TypeString.h"
-#include <iostream>
-#include <string.h>
 
-using namespace std;
-
-
-void TypeString::deleteHelp()
+TypeString::TypeString(char* data) : value(NULL)
 {
-    delete [] text;
+    setValue(data);
 }
 
-
-void TypeString::copy(const TypeString& s)
-{
-    int length = strlen(s.text) + 1;
-    text = new char[length];
-    strcpy(text, s.text);
-}
-
-
-TypeString::TypeString(char* newText): text(NULL)
-{
-
-}
-
-TypeString::TypeString(TypeString& s): text(NULL)
+TypeString::TypeString(const TypeString& s) : value(NULL)
 {
     copy(s);
+}
+
+TypeString::~TypeString()
+{
+    deleteHelp();
 }
 
 TypeString& TypeString::operator=(const TypeString& s)
@@ -39,22 +25,48 @@ TypeString& TypeString::operator=(const TypeString& s)
     return *this;
 }
 
-TypeString::~TypeString()
+bool TypeString::isValid(char* data)
+{
+    return (m.isString(data)) ? true : false;
+}
+
+const char* TypeString::getValue() const
+{
+    return value;
+}
+
+void TypeString::setValue(char* data)
 {
     deleteHelp();
+    int length = strlen(data) + 1;
+    value = new char[length];
+    strcpy(value, data);
 }
 
-void TypeString::printData()
+void TypeString::print() const
 {
-    cout << text;
+    if (value)
+    {
+        for(int index = 0; index < strlen(value)+1; ++index)
+        {
+            if(value[index] != '\\')  // za C:\\temp\\ opravi go!!!
+            {
+                cout << value[index];
+            }
+        }
+    }
 }
 
-void TypeString::setText(char* text)
-{
 
+void TypeString::deleteHelp()
+{
+    delete [] value;
 }
 
-const char* TypeString::getText() const
+
+void TypeString::copy(const TypeString& s)
 {
-    return text;
+    int length = strlen(s.value) + 1;
+    value = new char[length];
+    strcpy(value, s.value);
 }

@@ -1,33 +1,24 @@
-#include "Type.h"
-#include <iostream>
 #ifndef __TYPESTRING_H__
 #define __TYPESTRING_H__
+#include "Type.h"
 
-
-class TypeString: public Type
+class TypeString : public Type
 {
-
-
     public:
-        TypeString(): text(NULL)
-        {
-
-        }
-        TypeString(char* newText);
-        TypeString(TypeString& s);
-        TypeString& operator=(const TypeString& s);
+        TypeString() : value(0) {}
+        TypeString(char* data);
+        TypeString(const TypeString&);
         ~TypeString();
+        TypeString& operator=(const TypeString&);
 
-        void printData();
-        void setText(char* text);
-
-        const char* getText() const;
-
+        bool isValid(char* data);
+        const char* getValue() const;
+        void setValue(char* data);
+        void print() const;
     private:
-        char* text;
-
+        char* value;
+        Manager m;
         void deleteHelp();
-        void copy(const TypeString& s);
+        void copy(const TypeString&);
 };
-
 #endif

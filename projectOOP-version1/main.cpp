@@ -1,45 +1,88 @@
 #include <iostream>
-#include "ReadFromFile.h"
+#include <string.h>
+#include "Table.h"
 
 using namespace std;
 
-int main()
+int main(int argc, const char * argv[])
 {
-    /*
-    //fileName
-    char name[1024];
-    cin >> name;
 
-    readFile(name);
-    arrayOfCountColumns(name);
-    */
-    char proba[30];
-    cin >> proba;
-///*
-    //??type
-    cout << (isInt(proba) ? "Yes\n" : "No\n");
-    int result = castStringToInt(proba);
-    cout << result << " " << result+1 << endl;
-    cout << (isDouble(proba) ? "Yes\n" : "No\n");
-    double result1 = castStringToDouble(proba);
-    cout << result1 << " " << result1+1 << endl;
-    cout << (isDate(proba) ? "Yes\n" : "No\n");
+   //fileName
+    char fileName[100];
+    cout << "Input file name: ";
+    cin >> fileName;
+    cout << endl;
 
-//*/
+    Table tablica;
 
 
-    cout << (isDate(proba) ? "Yes\n" : "No\n");
 
-/*
-
-    //razdelqne na kletki
-    char** array = rowsMember(proba);
-
-
-    for(int id = 0; id < countColumns(proba)+1; ++id)
+    while(true)
     {
-        cout << array[id] << " ";
+        char buffer[20];
+        cin >> buffer;
+
+        if(strcmp("load", buffer) == 0)
+        {
+            if(!tablica.loadDataFromFile(fileName))
+            {
+                return 0;
+            }
+            cout << endl;
+            cin.ignore();
+        }
+        else if(strcmp("save", buffer) == 0)
+        {
+            //tablica.saveDataFromFile(fileName);
+            cout << endl;
+            cin.ignore();
+        }
+        else if(strcmp("sort", buffer) == 0)
+        {
+            int numberColumn;
+            cin >> numberColumn;
+
+            //tablica.sortColumns(numberColumn);
+            cout << endl;
+            cin.ignore();
+        }
+        else if(strcmp("print", buffer) == 0)
+        {
+            tablica.printTable();
+
+            cout << endl;
+            cin.ignore();
+        }
+        else if(strcmp("edit", buffer) == 0)
+        {
+            cin.ignore();
+            int row;
+            int column;
+            cin >> row >> column;
+
+            char content[1024];
+            cin.getline(content, 1024);
+
+            //tablica.editCell(row, column, content);
+            cout << endl;
+        }
+        else if(strcmp("exit", buffer) == 0)
+        {
+            cin.ignore();
+            break;
+        }
+
+
     }
-*/
+
     return 0;
 }
+
+
+
+
+
+
+
+
+
