@@ -393,7 +393,6 @@ char* Manager::LTrim(char* szX)
 char* Manager::RTrim(char* szX)
 {
     int i = strlen(szX);
-    //while(' '==szX[--i]) szX[i] = 0;
     while ((' '==szX[i]) || ('\t' == szX[i]) || ('\v'==szX[i]) ||
            ('\f'==szX[i])  || ('\r'==szX[i]) || ('\n'==szX[i]))
     {
@@ -410,4 +409,68 @@ char* Manager::Trim(char* szX)
     szX = LTrim(szX);
     szX = RTrim(szX);
     return szX;
+}
+
+
+bool Manager::validDate(char* data)
+{
+    int day = dateMember(data, "day");
+    int month = dateMember(data, "month");
+    int year = dateMember(data, "year");
+
+    if(year >= 1900 && year <= 2018)
+    {
+        if(month <= 12 && month >= 1)
+        {
+            if((month == 2) && (day <= 28 && day >= 1))
+            {
+                return true;
+            }
+            else if((month % 2 != 0) && (day <= 31 && day >= 1))
+            {
+                return true;
+            }
+            else if((month % 2 == 0) && (day <= 30 && day >= 1))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return false;
+}
+
+
+int Manager::maxOfCountColumns(char* fileName)
+{
+    int countRows = countRowsInFile(fileName);
+    int count = 0;
+
+    ifstream myFile1(fileName);
+    if(myFile1)
+    {
+        char buff[1024];
+        while(myFile1.getline(buff, 1024))
+        {
+            char* row = new char[strlen(buff)+1];
+            strcpy(row, buff);
+            if(count < countColumns(row))
+            {
+                count = countColumns(row);
+            }
+        }
+    }
+
+    myFile1.close();
+
+    return count;
 }

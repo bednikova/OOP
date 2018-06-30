@@ -10,7 +10,7 @@ TypeDate::TypeDate(char* data) : Type(data)
 
 bool TypeDate::isValid(char* data)
 {
-    return (m.isDate(data)) ? true : false;
+    return (m.isDate(data) && m.validDate(data)) ? true : false;
 }
 
 int TypeDate::getDay() const
@@ -41,4 +41,40 @@ void TypeDate::setValue(char* data)
 void TypeDate::print() const
 {
     cout << day << "." << month << "." << year;
+}
+
+
+int TypeDate::castDate()
+{
+    int days = 0;
+    int helpMonth = month-1;
+
+
+    days += day;
+    if(month == 1)
+    {
+        days += 365*(year-1);
+        return days;
+    }
+    else
+    {
+        while(helpMonth >= 1)
+        {
+            if(helpMonth == 2)
+            {
+                days += 28;
+            }
+            else if(helpMonth % 2 == 0)
+            {
+                days += 30;
+            }
+            else
+            {
+                days += 31;
+            }
+        }
+        days += 365*(year-1);
+    }
+
+    return days;
 }

@@ -15,6 +15,8 @@ class TypeDate : public Type
         //char* getValue() const;
         void setValue(char* data);
         void print() const;
+
+        int castDate();
     private:
         Manager m;
         int day;

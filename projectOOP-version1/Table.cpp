@@ -32,6 +32,8 @@ bool Table::loadDataFromFile(char* fileName)
         matrix = new Type**[numRows];
         columnsSize = new int[numRows];
 
+        //count columns
+
         for ( int index = 0 ; index < numRows; ++index)
         {
             char buff[1024];
@@ -59,7 +61,7 @@ bool Table::loadDataFromFile(char* fileName)
                     //cout << m.Trim(rowAttributes[colIndex]) << endl;
                     matrix[index][colIndex] = new TypeDouble(m.Trim(rowAttributes[colIndex]));
                 }
-                else if (m.isDate(m.Trim(rowAttributes[colIndex])))
+                else if ((m.isDate(m.Trim(rowAttributes[colIndex]))) && (m.validDate(m.Trim(rowAttributes[colIndex]))))
                 {
                     //cout << "date\n";
                     //cout << m.Trim(rowAttributes[colIndex]) << endl;
@@ -78,8 +80,17 @@ bool Table::loadDataFromFile(char* fileName)
                 }
                 else
                 {
-                    cout << "Error: row " << index+1 << ", col " << colIndex+1 << ", "
-                         << rowAttributes[colIndex] << " is unknown data type\n";
+                    if(m.isDate(m.Trim(rowAttributes[colIndex])))
+                    {
+                        cout << "Error: row " << index+1 << ", col " << colIndex+1 << ", "
+                             << rowAttributes[colIndex] << " is not valid data! \n";
+
+                    }
+                    else
+                    {
+                        cout << "Error: row " << index+1 << ", col " << colIndex+1 << ", "
+                             << rowAttributes[colIndex] << " is unknown data type\n";
+                    }
                    delete [] rowAttributes;
                    input.close();
                    return false;
@@ -124,21 +135,21 @@ void Table::saveDataFromFile(char* fileName)
         for ( int index = 0; index < rowCount; ++index)
         {
             int numCols = columnsSize[index];
-            //char content[1024] = "";
+
             for (int colIndex = 0; colIndex < numCols; ++colIndex)
             {
                 output <<  matrix[index][colIndex]->getData();
-                //strcpy(content,matrix[index][colIndex]);
+
                 if(colIndex < numCols-1)
                 {
                     output << ", ";
-                    //strcpy(content,",");
+
 
                 }
             }
-            //strcpy(content,"\n");
-            output << "\n";
-            //output << content;
+
+            output << " \n";
+
         }
     }
     output.close();
@@ -148,6 +159,8 @@ void Table::saveDataFromFile(char* fileName)
 void Table::editCell(int row, int column, char* content)
 {
     Manager m;
+
+    //proveri dali sa korektni redyt i kolonata!!!
 
     if(m.isInt(m.Trim(content)))
     {
@@ -159,7 +172,7 @@ void Table::editCell(int row, int column, char* content)
         delete matrix[row-1][column-1];
         matrix[row-1][column-1] = new TypeDouble(m.Trim(content));
     }
-    else if(m.isDate(m.Trim(content)))
+    else if(m.isDate(m.Trim(content)) && (m.validDate(m.Trim(content))))
     {
         delete matrix[row-1][column-1];
         matrix[row-1][column-1] = new TypeDate(m.Trim(content));
@@ -180,3 +193,5 @@ void Table::editCell(int row, int column, char* content)
         cout << "Error: " << content << " is unknown data type\n";
     }
 }
+
+

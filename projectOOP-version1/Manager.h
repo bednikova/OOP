@@ -38,7 +38,6 @@ class Manager
         double castStringToDouble(char* data);
 
         //razdelq na grupi, i vrysha masiv ot kletki
-        //ne sym q realizirala
         char** rowsMember(char* data);
 
         //vrysha day, month or year // data
@@ -48,6 +47,12 @@ class Manager
         char* LTrim(char* szX);
         char* RTrim(char* szX);
         char* Trim(char* szX);
+
+        //valid Date
+        bool validDate(char* data);
+
+        //max count of columns
+        int maxOfCountColumns(char* fileName);
 
     private:
 
