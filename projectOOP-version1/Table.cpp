@@ -356,10 +356,11 @@ void Table::sort(int column, Table table)
     //table = *this;
     //table.printTable();
 
-    for(int index = 0; index < maxColumns; ++index)//for (c = 0 ; c < ( n - 1 ); c++)
+    for(int index = 0; index < rowCount; ++index)//for (c = 0 ; c < ( n - 1 ); c++) maxCount
     {
-        for(int indexRow = 0; indexRow < maxColumns - index - 1; ++indexRow)//for (d = 0 ; d < n - c - 1; d++)
+        for(int indexRow = 0; indexRow < rowCount - index - 1; ++indexRow)//for (d = 0 ; d < n - c - 1; d++)
         {
+            //vij tipovete
           if(matrix[indexRow][column-1]->getIntValue() > (matrix[indexRow+1][column-1]->getIntValue()))
             //if (array[d] > array[d+1])
           {
