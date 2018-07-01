@@ -93,6 +93,7 @@ int TypeString::getIntValue()
     {
         return 0;
     }
+    //cout << value << " int -> " << atoi(value);
     return atoi(value);
 }
 

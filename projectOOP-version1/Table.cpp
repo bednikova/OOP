@@ -1,5 +1,6 @@
 #include "Table.h"
 #include "Manager.h"
+#include <iomanip>
 
 using namespace std;
 
@@ -219,17 +220,22 @@ bool Table::loadDataFromFile(char* fileName)
 
 void Table::printTable() const
 {
+    Manager m;
     for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
     {
         int numCols = maxColumns;
 
         for (int colIndex = 0; colIndex < numCols; ++colIndex)
         {
+            //cout << setiosflags(ios::fixed);
             matrix[rowIndex][colIndex]->print();
 
             if (colIndex + 1 < numCols)
             {
-                cout << " | ";
+                if(m.isString(m.Trim(matrix[rowIndex][colIndex]->getData())))
+                    cout << setw(20-strlen(m.Trim(matrix[rowIndex][colIndex]->getData()))+1) << "| ";
+                else
+                    cout << setw(20-strlen(m.Trim(matrix[rowIndex][colIndex]->getData()))) << "| ";
             }
         }
         cout << endl;
@@ -333,10 +339,10 @@ void Table::sort(int column, Table table)
     {
         for(int indexRow = 0; indexRow < rowCount - index - 1; ++indexRow)
         {
-            if((((m.isInt(matrix[indexRow][column-1]->getData()) && m.isInt(matrix[indexRow+1][column-1]->getData()))) &&
-                (m.castStringToInt(matrix[indexRow][column-1]->getData()) > m.castStringToInt(matrix[indexRow+1][column-1]->getData()))) ||
-               (((m.isDouble(matrix[indexRow][column-1]->getData()) && m.isDouble(matrix[indexRow+1][column-1]->getData()))) &&
-                (m.castStringToDouble(matrix[indexRow][column-1]->getData()) > m.castStringToDouble(matrix[indexRow+1][column-1]->getData()))))
+            if((((m.isInt(m.Trim(matrix[indexRow][column-1]->getData())) && m.isInt(m.Trim(matrix[indexRow+1][column-1]->getData()))) &&
+                (m.castStringToInt(m.Trim(matrix[indexRow][column-1]->getData())) > m.castStringToInt(m.Trim(matrix[indexRow+1][column-1]->getData()))))) ||
+               (((m.isDouble(m.Trim(matrix[indexRow][column-1]->getData())) && m.isDouble(m.Trim(matrix[indexRow+1][column-1]->getData()))) &&
+                (m.castStringToDouble(m.Trim(matrix[indexRow][column-1]->getData())) > m.castStringToDouble(m.Trim(matrix[indexRow+1][column-1]->getData()))))))
               {
 
                     for(int ind = 0; ind < maxColumns; ++ind)
@@ -348,8 +354,8 @@ void Table::sort(int column, Table table)
                     for(int ind = 0; ind < maxColumns; ++ind)
                         this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
               }
-              else  if((((m.isString(matrix[indexRow][column-1]->getData()) && m.isString(matrix[indexRow+1][column-1]->getData()))) &&
-                    (matrix[indexRow][column-1]->getData() > matrix[indexRow+1][column-1]->getData())))
+              else  if((((m.isString(m.Trim(matrix[indexRow][column-1]->getData())) && m.isString(m.Trim(matrix[indexRow+1][column-1]->getData())))) &&
+                    (m.Trim(matrix[indexRow][column-1]->getData()) > m.Trim(matrix[indexRow+1][column-1]->getData()))))
                     {
                             for(int ind = 0; ind < maxColumns; ++ind)
                                 table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
@@ -360,8 +366,8 @@ void Table::sort(int column, Table table)
                             for(int ind = 0; ind < maxColumns; ++ind)
                                 this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
                     }
-              else if((((m.isDate(matrix[indexRow][column-1]->getData()) && m.isDate(matrix[indexRow+1][column-1]->getData()))) &&
-                    (matrix[indexRow][column-1]->getIntValue() > matrix[indexRow+1][column-1]->getIntValue())))
+              else if((((m.isDate(m.Trim(matrix[indexRow][column-1]->getData()))) && m.isDate(m.Trim(matrix[indexRow+1][column-1]->getData())))) &&
+                    (matrix[indexRow][column-1]->getIntValue() > matrix[indexRow+1][column-1]->getIntValue()))
                     {
                         for(int ind = 0; ind < maxColumns; ++ind)
                             table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());

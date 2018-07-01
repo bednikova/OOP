@@ -48,12 +48,13 @@ int TypeDate::castDate() const
 {
     int days = day;
     int helpMonth = month-1;
+    int helpYear = year - 1900;
 
 
 
-    if(month == 1)
+    if(month == 1 && helpYear != 0)
     {
-        days += 365*(year-1);
+        days += 365*(helpYear-1);
         return days;
     }
     else
@@ -76,9 +77,14 @@ int TypeDate::castDate() const
             --helpMonth;
         }
 
+        if(helpYear != 0)
+        {
+            days += 365*(helpYear-1);
+        }
+
     }
 
-    days = days + 365*(year-1);
+    //cout << "date -> int " << days << endl;
     return days;
 }
 
