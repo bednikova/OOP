@@ -44,13 +44,13 @@ void TypeDate::print() const
 }
 
 
-int TypeDate::castDate()
+int TypeDate::castDate() const
 {
-    int days = 0;
+    int days = day;
     int helpMonth = month-1;
 
 
-    days += day;
+
     if(month == 1)
     {
         days += 365*(year-1);
@@ -64,7 +64,7 @@ int TypeDate::castDate()
             {
                 days += 28;
             }
-            else if(helpMonth % 2 == 0)
+            else if(helpMonth % 2 == 0 && helpMonth != 2)
             {
                 days += 30;
             }
@@ -75,9 +75,10 @@ int TypeDate::castDate()
 
             --helpMonth;
         }
-        days += 365*(year-1);
+
     }
 
+    days = days + 365*(year-1);
     return days;
 }
 
@@ -86,4 +87,15 @@ int TypeDate::getIntValue()
 {
 
     return this->castDate();
+}
+
+
+bool TypeDate::operator>(const TypeDate& t)
+{
+    if(castDate() > t.castDate())
+    {
+        return false;
+    }
+
+    return true;
 }

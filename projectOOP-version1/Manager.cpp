@@ -38,7 +38,7 @@ int Manager::countColumns(char* row)
     return columns+1;
 }
 
-bool Manager::isInt(char* data)  //trqbva data da nqma intervali
+bool Manager::isInt(char* data)
 {
     int len = strlen(data);
 
@@ -132,9 +132,7 @@ bool Manager::isString(char* data)
     int len = strlen(data);
     int count = 0;
 
-    //char* data1 = new char[strlen(myTrim2(data))+1];
-    //strcpy(data1,myTrim2(data));
-    //delete data;
+
     for(int index = 0; index < len; ++index)
     {
         if(data[index] == '\"')
@@ -257,7 +255,7 @@ char** Manager::rowsMember(char* data)
             ++count;
             ++i;
         }
-        //cout << "i and count " << i << " " << count << endl;
+
         end = i;
         buff = new char[count+1];
 
@@ -273,11 +271,6 @@ char** Manager::rowsMember(char* data)
         delete [] buff;
     }
 
-//        for(int id = 0; id < countCol+1; ++id)
-//        {
-//            cout << array[id] << " ";
-//        }
-//
 
     return array;
 }
@@ -286,7 +279,6 @@ char** Manager::rowsMember(char* data)
 int Manager::dateMember(char* data, char* date)
 {
     int len = strlen(data);
-    //int countCol = countColumns(data);
     char** array = new char*[3+1];
     int start = 0;
     int end = 0;
@@ -303,7 +295,6 @@ int Manager::dateMember(char* data, char* date)
             ++count;
             ++i;
         }
-        //cout << "i and count " << i << " " << count << endl;
         end = i;
         buff = new char[count+1];
 
@@ -322,29 +313,20 @@ int Manager::dateMember(char* data, char* date)
     for(int id = 0; id < 3+1; ++id)
     {
 
-
-        //{
-          //  cout << array[id] << " ";
-        //}
-
         if(strcmp(date, "day") == 0 && (strlen(array[0])==2))
         {
-            //cout << castStringToInt(trim(array[0]));
             return castStringToInt(Trim(array[0])); //trim
         }
         else if(strcmp(date, "day") == 0 && (strlen(array[2])==2))
         {
-            //cout << castStringToInt(trim(array[2]));
             return castStringToInt(Trim(array[2]));
         }
         else if(strcmp(date,"year") == 0 && (strlen(array[2])==4))
         {
-            //cout << castStringToInt(trim(array[2]));
             return castStringToInt(Trim(array[2]));
         }
         else if(strcmp(date,"year") == 0 && (strlen(array[0])==4))
         {
-            //cout << castStringToInt(trim(array[0]));
             return castStringToInt(Trim(array[0]));
         }
         else if(strcmp(date,"month") == 0)
@@ -357,28 +339,6 @@ int Manager::dateMember(char* data, char* date)
     }
     return 0;
 }
-
-/*
-char* Manager::LTrim(char* szX)
-{
-    if(' '==szX[0]) while(' '==(++szX)[0]);
-    return szX;
-}
-
-char* Manager::RTrim(char* szX)
-{
-    int i = strlen(szX);
-    while(' '==szX[--i]) szX[i] = 0;
-    return szX;
-}
-
-char* Manager::Trim(char* szX)
-{
-    szX = LTrim(szX);
-    szX = RTrim(szX);
-    return szX;
-}
-*/
 
 
 char* Manager::LTrim(char* szX)

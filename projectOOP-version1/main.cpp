@@ -42,26 +42,9 @@ int main(int argc, const char * argv[])
             int numberColumn;
             cin >> numberColumn;
 
-            /*
-            //test
-            cout << "copy1 \n";
-            Table t2;
-            t2 = tablica;
-            t2.printTable();
-            cout << "copy2 \n";
-            Table t3(tablica);
-            t3.printTable();
-            cout << "copy3 \n";
-            Table t4("newFile.txt");
-            t4.printTable();
-            cout << "copy4 \n";
-            Table t5 = tablica;
-            t5.printTable();
-
-            */
-
             //tablica.sortColumns(numberColumn);
             tablica.sort(numberColumn, tablica);
+            //tablica.sort(numberColumn, tablica);
             cout << endl;
             cin.ignore();
         }

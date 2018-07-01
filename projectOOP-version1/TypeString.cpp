@@ -95,3 +95,28 @@ int TypeString::getIntValue()
     }
     return atoi(value);
 }
+
+
+bool TypeString::operator>(const TypeString& t)
+{
+    int len = strlen(value)+1;
+    if(len < strlen(t.value)+1)
+    {
+        return false;
+    }
+
+    if(len > strlen(t.value)+1)
+    {
+        return true;
+    }
+
+    for(int index = 0; index < len; ++index)
+    {
+        if(value[index] < t.value[index])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}

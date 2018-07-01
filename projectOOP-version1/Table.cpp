@@ -33,7 +33,7 @@ void Table::copy(const Table& t)
 
         for (int colIndex = 0; colIndex < maxColumns; ++colIndex)
         {
-            if (m.isInt(t.matrix[index][colIndex]->getData())) // moje bi bez trim
+            if (m.isInt(t.matrix[index][colIndex]->getData()))
             {
                 //delete matrix[index][colIndex];
                 matrix[index][colIndex] = new TypeInt(t.matrix[index][colIndex]->getData());
@@ -94,34 +94,28 @@ Table::Table(const Table& t)
 
     for (int index = 0 ; index < rowCount; ++index)
     {
-        //delete matrix[index];
         matrix[index] = new Type*[maxColumns];
 
         for (int colIndex = 0; colIndex < maxColumns; ++colIndex)
         {
-            if (m.isInt(t.matrix[index][colIndex]->getData())) // moje bi bez trim
+            if (m.isInt(t.matrix[index][colIndex]->getData()))
             {
-                //delete matrix[index][colIndex];
                 matrix[index][colIndex] = new TypeInt(t.matrix[index][colIndex]->getData());
             }
             else if (m.isDouble(t.matrix[index][colIndex]->getData()))
             {
-                //delete matrix[index][colIndex];
                 matrix[index][colIndex] = new TypeDouble(t.matrix[index][colIndex]->getData());
             }
             else if (m.isDate(t.matrix[index][colIndex]->getData()))
             {
-                //delete matrix[index][colIndex];
                 matrix[index][colIndex] = new TypeDate(t.matrix[index][colIndex]->getData());
             }
             else if(m.isString(t.matrix[index][colIndex]->getData()))
             {
-                //delete matrix[index][colIndex];
                 matrix[index][colIndex] = new TypeString(t.matrix[index][colIndex]->getData());
             }
             else
             {
-                //delete matrix[index][colIndex];
                 matrix[index][colIndex] = new TypeString();
             }
 
@@ -155,15 +149,13 @@ bool Table::loadDataFromFile(char* fileName)
         matrix = new Type**[numRows];
 
 
-        //count columns
-
         for ( int index = 0 ; index < numRows; ++index)
         {
             char buff[1024];
             input.getline(buff, 1024);
             int numOfColumns = m.countColumns(buff);
 
-            matrix[index] = new Type*[maxColumns];//new Type*[numOfColumns];
+            matrix[index] = new Type*[maxColumns];
 
 
             char** rowAttributes = m.rowsMember(buff);
@@ -172,33 +164,22 @@ bool Table::loadDataFromFile(char* fileName)
             {
                 if (m.isInt(m.Trim(rowAttributes[colIndex])))
                 {
-                    //cout << "int\n";
-                    //cout << rowAttributes[colIndex] << endl;
-                    //cout << m.Trim(rowAttributes[colIndex]) << endl;
                     matrix[index][colIndex] = new TypeInt(m.Trim(rowAttributes[colIndex]));
                 }
                 else if (m.isDouble(m.Trim(rowAttributes[colIndex])))
                 {
-                    //cout << "double\n";
-                    //cout << rowAttributes[colIndex] << endl;
-                    //cout << m.Trim(rowAttributes[colIndex]) << endl;
                     matrix[index][colIndex] = new TypeDouble(m.Trim(rowAttributes[colIndex]));
                 }
                 else if ((m.isDate(m.Trim(rowAttributes[colIndex]))) && (m.validDate(m.Trim(rowAttributes[colIndex]))))
                 {
-                    //cout << "date\n";
-                    //cout << m.Trim(rowAttributes[colIndex]) << endl;
                     matrix[index][colIndex] = new TypeDate(m.Trim(rowAttributes[colIndex]));
                 }
                 else if(m.isString(m.Trim(rowAttributes[colIndex])))
                 {
-                    //cout << "string\n";
-                    //cout << m.Trim(rowAttributes[colIndex]) << endl;
                     matrix[index][colIndex] = new TypeString(m.Trim(rowAttributes[colIndex]));
                 }
                 else if(strlen(rowAttributes[colIndex]) == 0 || strlen(rowAttributes[colIndex]) == 1)
                 {
-                    //cout << "string - empty string\n";
                     matrix[index][colIndex] = new TypeString();
                 }
                 else
@@ -240,7 +221,6 @@ void Table::printTable() const
 {
     for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
     {
-        //int numCols = columnsSize[rowIndex];
         int numCols = maxColumns;
 
         for (int colIndex = 0; colIndex < numCols; ++colIndex)
@@ -265,24 +245,19 @@ void Table::saveDataFromFile(char* fileName)
     {
         for ( int index = 0; index < rowCount; ++index)
         {
-            //int numCols = columnsSize[index];
-            int numCols = maxColumns-1; // -1
+            int numCols = maxColumns-1;
 
             for (int colIndex = 0; colIndex < numCols; ++colIndex)
             {
                 output <<  matrix[index][colIndex]->getData();
 
-                if(colIndex == numCols-1)  //numCols-1
+                if(colIndex == numCols-1)
                 {
                     //output << ", ";
-
-
                 }
                 else if(colIndex < numCols)  //numCols-1
                 {
                     output << ", ";
-
-
                 }
             }
 
@@ -297,8 +272,6 @@ void Table::saveDataFromFile(char* fileName)
 void Table::editCell(int row, int column, char* content)
 {
     Manager m;
-
-    //proveri dali sa korektni redyt i kolonata!!!
     if(row > rowCount)
     {
         cout << "Not valid row!!!\n";
@@ -354,26 +327,64 @@ void Table::sort(int column, Table table)
 
     //Table table;
     //table = *this;
-    //table.printTable();
+    Manager m;
 
-    for(int index = 0; index < rowCount; ++index)//for (c = 0 ; c < ( n - 1 ); c++) maxCount
+    for(int index = 0; index < rowCount; ++index)
     {
-        for(int indexRow = 0; indexRow < rowCount - index - 1; ++indexRow)//for (d = 0 ; d < n - c - 1; d++)
+        for(int indexRow = 0; indexRow < rowCount - index - 1; ++indexRow)
         {
-            //vij tipovete
-          if(matrix[indexRow][column-1]->getIntValue() > (matrix[indexRow+1][column-1]->getIntValue()))
-            //if (array[d] > array[d+1])
-          {
-            //swap       = array[d];
-            for(int ind = 0; ind < maxColumns; ++ind)
-                table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
-            //array[d]   = array[d+1];
-            for(int ind = 0; ind < maxColumns; ++ind)
-                this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
-            //array[d+1] = swap;
-            for(int ind = 0; ind < maxColumns; ++ind)
-                this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
-          }
+            if((((m.isInt(matrix[indexRow][column-1]->getData()) && m.isInt(matrix[indexRow+1][column-1]->getData()))) &&
+                (m.castStringToInt(matrix[indexRow][column-1]->getData()) > m.castStringToInt(matrix[indexRow+1][column-1]->getData()))) ||
+               (((m.isDouble(matrix[indexRow][column-1]->getData()) && m.isDouble(matrix[indexRow+1][column-1]->getData()))) &&
+                (m.castStringToDouble(matrix[indexRow][column-1]->getData()) > m.castStringToDouble(matrix[indexRow+1][column-1]->getData()))))
+              {
+
+                    for(int ind = 0; ind < maxColumns; ++ind)
+                        table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+
+                    for(int ind = 0; ind < maxColumns; ++ind)
+                        this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+
+                    for(int ind = 0; ind < maxColumns; ++ind)
+                        this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+              }
+              else  if((((m.isString(matrix[indexRow][column-1]->getData()) && m.isString(matrix[indexRow+1][column-1]->getData()))) &&
+                    (matrix[indexRow][column-1]->getData() > matrix[indexRow+1][column-1]->getData())))
+                    {
+                            for(int ind = 0; ind < maxColumns; ++ind)
+                                table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+
+                            for(int ind = 0; ind < maxColumns; ++ind)
+                                this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+
+                            for(int ind = 0; ind < maxColumns; ++ind)
+                                this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+                    }
+              else if((((m.isDate(matrix[indexRow][column-1]->getData()) && m.isDate(matrix[indexRow+1][column-1]->getData()))) &&
+                    (matrix[indexRow][column-1]->getIntValue() > matrix[indexRow+1][column-1]->getIntValue())))
+                    {
+                        for(int ind = 0; ind < maxColumns; ++ind)
+                            table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+
+                        for(int ind = 0; ind < maxColumns; ++ind)
+                            this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+
+                        for(int ind = 0; ind < maxColumns; ++ind)
+                            this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+                    }
+              else if(matrix[indexRow][column-1]->getIntValue() > (matrix[indexRow+1][column-1]->getIntValue()))
+                //if (array[d] > array[d+1])
+              {
+                //swap       = array[d];
+                for(int ind = 0; ind < maxColumns; ++ind)
+                    table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+                //array[d]   = array[d+1];
+                for(int ind = 0; ind < maxColumns; ++ind)
+                    this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+                //array[d+1] = swap;
+                for(int ind = 0; ind < maxColumns; ++ind)
+                    this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+              }
         }
     }
 }
