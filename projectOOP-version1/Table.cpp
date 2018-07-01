@@ -84,7 +84,7 @@ bool Table::loadDataFromFile(char* fileName)
                     if(m.isDate(m.Trim(rowAttributes[colIndex])))
                     {
                         cout << "Error: row " << index+1 << ", col " << colIndex+1 << ", "
-                             << rowAttributes[colIndex] << " is not valid data! \n";
+                             << rowAttributes[colIndex] << " is not valid date! \n";
 
                     }
                     else
@@ -144,13 +144,19 @@ void Table::saveDataFromFile(char* fileName)
         for ( int index = 0; index < rowCount; ++index)
         {
             //int numCols = columnsSize[index];
-            int numCols = maxColumns;
+            int numCols = maxColumns-1; // -1
 
             for (int colIndex = 0; colIndex < numCols; ++colIndex)
             {
                 output <<  matrix[index][colIndex]->getData();
 
-                if(colIndex < numCols-1)
+                if(colIndex == numCols-1)  //numCols-1
+                {
+                    //output << ", ";
+
+
+                }
+                else if(colIndex < numCols)  //numCols-1
                 {
                     output << ", ";
 
@@ -158,7 +164,7 @@ void Table::saveDataFromFile(char* fileName)
                 }
             }
 
-            output << " \n";
+            output << "\n";
 
         }
     }
@@ -171,9 +177,14 @@ void Table::editCell(int row, int column, char* content)
     Manager m;
 
     //proveri dali sa korektni redyt i kolonata!!!
-    if(row > rowCount || column > maxColumns)
+    if(row > rowCount)
     {
-        cout << "Not valid row or column!!!\n";
+        cout << "Not valid row!!!\n";
+        return;
+    }
+    else if(column >= maxColumns)
+    {
+        cout << "Not valid column!!!\n";
         return;
     }
 
