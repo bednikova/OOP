@@ -15,6 +15,7 @@ class TypeString : public Type
         const char* getValue() const;
         void setValue(char* data);
         void print() const;
+        int getIntValue();
     private:
         char* value;
         Manager m;

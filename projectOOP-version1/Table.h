@@ -11,24 +11,30 @@ class Table
 {
     public:
 
-        Table(): matrix(NULL),columnsSize(NULL), rowCount(0)
+        Table(): matrix(NULL),rowCount(0), maxColumns(0)
         {
 
         }
         ~Table();
+        Table(char* fileName);
+        Table(const Table& t);
+        Table& operator=(const Table& t);
 
         bool loadDataFromFile(char* fileName);
         void saveDataFromFile(char* fileName);
         void editCell(int row, int column, char* content);
         void printTable() const;
-        void sort(int column);
+        void sort(int column, Table table);
 
     private:
 
         Type*** matrix;
-        int* columnsSize;
+        //int* columnsSize;
         int rowCount;
         int maxColumns;
+
+        void deleteHelp();
+        void copy(const Table& t);
 
 };
 

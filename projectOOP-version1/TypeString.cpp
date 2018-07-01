@@ -86,3 +86,12 @@ void TypeString::copy(const TypeString& s)
     value = new char[length];
     strcpy(value, s.value);
 }
+
+int TypeString::getIntValue()
+{
+    if(!value)
+    {
+        return 0;
+    }
+    return atoi(value);
+}

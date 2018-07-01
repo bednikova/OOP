@@ -11,6 +11,7 @@ class TypeDouble : public Type
         double getValue() const;
         void setValue(char* data);
         void print() const;
+        int getIntValue();
     private:
         double value;
         Manager m;

@@ -27,3 +27,8 @@ void TypeInt::print() const
 {
     cout << value;
 }
+
+int TypeInt::getIntValue()
+{
+    return getValue();
+}

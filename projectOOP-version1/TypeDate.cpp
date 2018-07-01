@@ -72,9 +72,18 @@ int TypeDate::castDate()
             {
                 days += 31;
             }
+
+            --helpMonth;
         }
         days += 365*(year-1);
     }
 
     return days;
+}
+
+
+int TypeDate::getIntValue()
+{
+
+    return this->castDate();
 }

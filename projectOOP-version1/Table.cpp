@@ -3,11 +3,11 @@
 
 using namespace std;
 
-Table::~Table()
+void Table::deleteHelp()
 {
     for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
     {
-        for ( int colIndex = 0; colIndex < columnsSize[rowIndex]; ++colIndex)
+        for ( int colIndex = 0; colIndex < maxColumns; ++colIndex)
         {
             delete matrix[rowIndex][colIndex];
         }
@@ -16,7 +16,129 @@ Table::~Table()
     }
 
     delete matrix;
-    delete columnsSize;
+}
+
+void Table::copy(const Table& t)
+{
+    deleteHelp();
+    maxColumns = t.maxColumns;
+    rowCount = t.rowCount;
+    Manager m;
+    matrix = new Type**[rowCount];
+
+    for (int index = 0 ; index < rowCount; ++index)
+    {
+        //delete matrix[index];
+        matrix[index] = new Type*[maxColumns];
+
+        for (int colIndex = 0; colIndex < maxColumns; ++colIndex)
+        {
+            if (m.isInt(t.matrix[index][colIndex]->getData())) // moje bi bez trim
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeInt(t.matrix[index][colIndex]->getData());
+            }
+            else if (m.isDouble(t.matrix[index][colIndex]->getData()))
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeDouble(t.matrix[index][colIndex]->getData());
+            }
+            else if (m.isDate(t.matrix[index][colIndex]->getData()))
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeDate(t.matrix[index][colIndex]->getData());
+            }
+            else if(m.isString(t.matrix[index][colIndex]->getData()))
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeString(t.matrix[index][colIndex]->getData());
+            }
+            else
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeString();
+            }
+
+        }
+    }
+}
+
+Table::~Table()
+{
+    deleteHelp();
+}
+
+
+Table::Table(char* fileName)
+{
+    try
+    {
+        if(!loadDataFromFile(fileName))
+        {
+            throw "Not valid data!\n";
+        }
+    }
+    catch(...)
+    {
+        cout << "Not valid data!\n";
+    }
+
+}
+
+Table::Table(const Table& t)
+{
+    maxColumns = t.maxColumns;
+    rowCount = t.rowCount;
+    Manager m;
+    matrix = new Type**[rowCount];
+
+    for (int index = 0 ; index < rowCount; ++index)
+    {
+        //delete matrix[index];
+        matrix[index] = new Type*[maxColumns];
+
+        for (int colIndex = 0; colIndex < maxColumns; ++colIndex)
+        {
+            if (m.isInt(t.matrix[index][colIndex]->getData())) // moje bi bez trim
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeInt(t.matrix[index][colIndex]->getData());
+            }
+            else if (m.isDouble(t.matrix[index][colIndex]->getData()))
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeDouble(t.matrix[index][colIndex]->getData());
+            }
+            else if (m.isDate(t.matrix[index][colIndex]->getData()))
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeDate(t.matrix[index][colIndex]->getData());
+            }
+            else if(m.isString(t.matrix[index][colIndex]->getData()))
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeString(t.matrix[index][colIndex]->getData());
+            }
+            else
+            {
+                //delete matrix[index][colIndex];
+                matrix[index][colIndex] = new TypeString();
+            }
+
+        }
+    }
+}
+
+
+Table& Table::operator=(const Table& t)
+{
+    if(this != &t)
+    {
+        deleteHelp();
+        copy(t);
+    }
+
+    return *this;
 }
 
 
@@ -31,7 +153,7 @@ bool Table::loadDataFromFile(char* fileName)
         int numRows = m.countRowsInFile(fileName);
         rowCount = numRows;
         matrix = new Type**[numRows];
-        columnsSize = new int[numRows];
+
 
         //count columns
 
@@ -40,7 +162,7 @@ bool Table::loadDataFromFile(char* fileName)
             char buff[1024];
             input.getline(buff, 1024);
             int numOfColumns = m.countColumns(buff);
-            columnsSize[index] = numOfColumns;
+
             matrix[index] = new Type*[maxColumns];//new Type*[numOfColumns];
 
 
@@ -182,7 +304,7 @@ void Table::editCell(int row, int column, char* content)
         cout << "Not valid row!!!\n";
         return;
     }
-    else if(column >= maxColumns)
+    else if(column > maxColumns) // >=
     {
         cout << "Not valid column!!!\n";
         return;
@@ -221,20 +343,37 @@ void Table::editCell(int row, int column, char* content)
 }
 
 
-void Table::sort(int column)
+void Table::sort(int column, Table table)
 {
-    /*
+
     if(column > maxColumns)
     {
         cout << "Not valid column! \n";
         return;
     }
 
-    char** matrixHelp = new Type*[rowCount];
-    for(int indexRow = 0; indexRow < rowCount; ++index)
+    //Table table;
+    //table = *this;
+    //table.printTable();
+
+    for(int index = 0; index < maxColumns; ++index)//for (c = 0 ; c < ( n - 1 ); c++)
     {
-        matrixHelp[indexRow] = new Type();
-        matrix[indexRow][column-1];
+        for(int indexRow = 0; indexRow < maxColumns - index - 1; ++indexRow)//for (d = 0 ; d < n - c - 1; d++)
+        {
+          if(matrix[indexRow][column-1]->getIntValue() > (matrix[indexRow+1][column-1]->getIntValue()))
+            //if (array[d] > array[d+1])
+          {
+            //swap       = array[d];
+            for(int ind = 0; ind < maxColumns; ++ind)
+                table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+            //array[d]   = array[d+1];
+            for(int ind = 0; ind < maxColumns; ++ind)
+                this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+            //array[d+1] = swap;
+            for(int ind = 0; ind < maxColumns; ++ind)
+                this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+          }
+        }
     }
-    */
 }
+

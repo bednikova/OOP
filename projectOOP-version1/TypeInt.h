@@ -14,6 +14,9 @@ class TypeInt : public Type
         int getValue() const;
         void setValue(char* data);
         void print() const;
+        int getIntValue();
+
+
     private:
         int value;
         Manager m;

@@ -28,3 +28,13 @@ void TypeDouble::print() const
     cout << value;
 }
 
+int TypeDouble::getIntValue()
+{
+    int newValue = 0;
+    if(getValue() < (int)getValue() + 0.5)
+    {
+        return (int)getValue();
+    }
+
+    return (int)getValue() + 1;
+}

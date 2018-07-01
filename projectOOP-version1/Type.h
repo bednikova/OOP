@@ -39,7 +39,9 @@ class Type
 
         virtual void print() const = 0;
 
-        const char* getData() const
+        virtual int getIntValue() = 0;
+
+        char* getData() const
         {
             return data;
         }

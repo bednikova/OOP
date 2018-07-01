@@ -15,6 +15,7 @@ class TypeDate : public Type
         //char* getValue() const;
         void setValue(char* data);
         void print() const;
+        int getIntValue();
 
         int castDate();
     private:
