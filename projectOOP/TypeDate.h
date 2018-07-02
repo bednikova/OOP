@@ -17,6 +17,7 @@ class TypeDate : public Type
         void print() const;
         int getIntValue();
         bool operator>(const TypeDate& t);
+        bool operator<(const TypeDate& t);
 
         int castDate() const;
     private:

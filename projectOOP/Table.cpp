@@ -227,15 +227,14 @@ void Table::printTable() const
 
         for (int colIndex = 0; colIndex < numCols; ++colIndex)
         {
-            //cout << setiosflags(ios::fixed);
             matrix[rowIndex][colIndex]->print();
 
             if (colIndex + 1 < numCols)
             {
-                if(m.isString(m.Trim(matrix[rowIndex][colIndex]->getData())))
-                    cout << setw(20-strlen(m.Trim(matrix[rowIndex][colIndex]->getData()))+1) << "| ";
+                if(m.isString(matrix[rowIndex][colIndex]->getData()))
+                    cout << setw(20-strlen(matrix[rowIndex][colIndex]->getData())+1) << "| ";
                 else
-                    cout << setw(20-strlen(m.Trim(matrix[rowIndex][colIndex]->getData()))) << "| ";
+                    cout << setw(20-strlen(matrix[rowIndex][colIndex]->getData())) << "| ";
             }
         }
         cout << endl;
@@ -380,6 +379,82 @@ void Table::sort(int column, Table table)
                     }
               else if(matrix[indexRow][column-1]->getIntValue() > (matrix[indexRow+1][column-1]->getIntValue()))
                 //if (array[d] > array[d+1])
+              {
+                //swap       = array[d];
+                for(int ind = 0; ind < maxColumns; ++ind)
+                    table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+                //array[d]   = array[d+1];
+                for(int ind = 0; ind < maxColumns; ++ind)
+                    this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+                //array[d+1] = swap;
+                for(int ind = 0; ind < maxColumns; ++ind)
+                    this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+              }
+        }
+    }
+}
+
+
+
+
+void Table::sort2(int column, Table table)
+{
+
+    if(column > maxColumns)
+    {
+        cout << "Not valid column! \n";
+        return;
+    }
+
+    //Table table;
+    //table = *this;
+    Manager m;
+
+    for(int index = 0; index < rowCount; ++index)
+    {
+        for(int indexRow = 0; indexRow < rowCount - index - 1; ++indexRow)
+        {
+            if((((m.isInt(m.Trim(matrix[indexRow][column-1]->getData())) && m.isInt(m.Trim(matrix[indexRow+1][column-1]->getData()))) &&
+                (m.castStringToInt(m.Trim(matrix[indexRow][column-1]->getData())) < m.castStringToInt(m.Trim(matrix[indexRow+1][column-1]->getData()))))) ||
+               (((m.isDouble(m.Trim(matrix[indexRow][column-1]->getData())) && m.isDouble(m.Trim(matrix[indexRow+1][column-1]->getData()))) &&
+                (m.castStringToDouble(m.Trim(matrix[indexRow][column-1]->getData())) < m.castStringToDouble(m.Trim(matrix[indexRow+1][column-1]->getData()))))))
+              {
+
+                    for(int ind = 0; ind < maxColumns; ++ind)
+                        table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+
+                    for(int ind = 0; ind < maxColumns; ++ind)
+                        this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+
+                    for(int ind = 0; ind < maxColumns; ++ind)
+                        this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+              }
+              else  if((((m.isString(m.Trim(matrix[indexRow][column-1]->getData())) && m.isString(m.Trim(matrix[indexRow+1][column-1]->getData())))) &&
+                    (m.Trim(matrix[indexRow][column-1]->getData()) < m.Trim(matrix[indexRow+1][column-1]->getData()))))
+                    {
+                            for(int ind = 0; ind < maxColumns; ++ind)
+                                table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+
+                            for(int ind = 0; ind < maxColumns; ++ind)
+                                this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+
+                            for(int ind = 0; ind < maxColumns; ++ind)
+                                this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+                    }
+              else if((((m.isDate(m.Trim(matrix[indexRow][column-1]->getData()))) && m.isDate(m.Trim(matrix[indexRow+1][column-1]->getData())))) &&
+                    (matrix[indexRow][column-1]->getIntValue() < matrix[indexRow+1][column-1]->getIntValue()))
+                    {
+                        for(int ind = 0; ind < maxColumns; ++ind)
+                            table.editCell(indexRow+1, ind+1, matrix[indexRow][ind]->getData());
+
+                        for(int ind = 0; ind < maxColumns; ++ind)
+                            this->editCell(indexRow+1, ind+1, matrix[indexRow+1][ind]->getData());
+
+                        for(int ind = 0; ind < maxColumns; ++ind)
+                            this->editCell(indexRow+2, ind+1, table.matrix[indexRow][ind]->getData());
+                    }
+              else if(matrix[indexRow][column-1]->getIntValue() < (matrix[indexRow+1][column-1]->getIntValue()))
+                //if (array[d] < array[d+1])
               {
                 //swap       = array[d];
                 for(int ind = 0; ind < maxColumns; ++ind)

@@ -17,6 +17,7 @@ class TypeString : public Type
         void print() const;
         int getIntValue();
         bool operator>(const TypeString& t);
+        bool operator<(const TypeString& t);
     private:
         char* value;
         Manager m;

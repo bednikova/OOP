@@ -42,8 +42,20 @@ int main(int argc, const char * argv[])
             int numberColumn;
             cin >> numberColumn;
 
-            //tablica.sortColumns(numberColumn);
-            tablica.sort(numberColumn, tablica);
+            char flag;
+            cin >> flag;
+
+            //tablica.sortColumns(numberColumn)
+            if(flag == 'n')
+            {
+                tablica.sort2(numberColumn, tablica);
+            }
+            else
+            {
+                tablica.sort(numberColumn, tablica);
+            }
+
+            //tablica.sort(numberColumn, tablica);
             //tablica.sort(numberColumn, tablica);
             cout << endl;
             cin.ignore();

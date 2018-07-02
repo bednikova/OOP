@@ -105,3 +105,9 @@ bool TypeDate::operator>(const TypeDate& t)
 
     return true;
 }
+
+
+bool TypeDate::operator<(const TypeDate& t)
+{
+    return (castDate() < t.castDate()) ? true : false;
+}
